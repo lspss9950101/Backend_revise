@@ -10,10 +10,11 @@ class Course{
 		this.score = raw_course.score;
 		this.score_level = raw_course.score_level;
 
+		this.pass_fail = (raw_course.pass_fail == '通過');
 		this.cos_year = raw_course.cos_year;
 		this.semester = raw_course.semester;
 		this.cos_credit = raw_course.cos_credit || raw_course.credit;
-		this.real_credit = null;
+		this.real_credit = raw_course.cos_credit;
 		this.moved = false;
 		this.reason = '';
 	}
@@ -27,12 +28,12 @@ class Course{
 			realCredit:		this.real_credit,
 			originalCredit:		this.cos_credit,
 			type:			this.cos_type,
-			complete:		
+			complete:		this.pass_fail,
 			grade:			this.score_level,
 			english:		(this.cos_typeext.includes('英文授課')), //uncertain
 			year:			this.cos_year,
 			semester:		this.semester,
-			reason:			
+			reason:			this.reason,
 			move:			this.moved,
 			dimension:
 		};
