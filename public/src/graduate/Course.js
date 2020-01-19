@@ -7,16 +7,24 @@ class Course{
 		this.cos_typeext = raw_course.cos_typeext;
 		this.brief = raw_course.brief;
 		this.brief_new = raw_course.brief_new;
-		this.score = raw_course.score;
-		this.score_level = raw_course.score_level;
+		this.cos_credit = raw_course.cos_credit;
+		this.real_credit = raw_course.cos_credit;
 
-		this.pass_fail = (raw_course.pass_fail == '通過');
 		this.cos_year = raw_course.cos_year;
 		this.semester = raw_course.semester;
-		this.cos_credit = raw_course.cos_credit || raw_course.credit;
-		this.real_credit = raw_course.cos_credit;
 		this.moved = false;
 		this.reason = '';
+
+		this.score = {(cos_year + '-' + semester) : raw_course.score};
+		this.score_level = {(cos_year + '-' + semester) : raw_course.score_level};
+		this.pass_fail = {(cos_year + '-' + semester) : (raw_course.pass_fail == '通過')};
+	}
+
+	append(course){
+		let time_id = course.cos_year + '-' + course_semester;
+		this.score[time_id] = course.score;
+		this.score_level[time_id] = course.score_level;
+		this.pass_fail[time_id] = (course.pass_fail == '通過');
 	}
 
 	format(){
