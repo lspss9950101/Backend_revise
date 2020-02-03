@@ -16,8 +16,8 @@ class Course{
 		this.moved = false;
 		this.reason = '';
 
-		this.score = {(year + '-' + semester) : raw_course.score};
-		this.score_level = {(year + '-' + semester) : raw_course.score_level};
+		this.score = {(year + '-' + semester) : (raw_course.score || -1)};
+		this.score_level = {(year + '-' + semester) : (raw_course.score_level || "0")};
 		this.pass_fail = {(year + '-' + semester) : (raw_course.pass_fail == '通過')};
 		this.dimension = '';
 	}
@@ -28,7 +28,15 @@ class Course{
 		this.score_level[time_id] = course.score_level;
 		this.pass_fail[time_id] = (course.pass_fail == '通過');
 	}
-
+/*
+	copy(){
+		let result = Object.assign({}, this);
+		result.score = Object.assign({}, this.score);
+		result.score_level = Object.assign({}, this.score_level);
+		result.pass_fail = Object.assign({}, this.pass_fail);
+		return result;
+	}
+*/
 	format(){
 		let result = {
 			cn:			this.cname,

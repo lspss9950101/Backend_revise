@@ -1,6 +1,6 @@
 function initContainers(req, res, next){
 	req.csca.data = {
-		passed_courses:		{},
+		taken_courses:		{},
 		on_courses: 		{},
 		offset_courses: 	{},
 		moved_records: 		{},
@@ -10,7 +10,7 @@ function initContainers(req, res, next){
 	};
 
 	req.csca.rule = {
-		compulsory:	{courses: [], codes: []},
+		compulsory:	{courses_rules: [], codes: []},
 
 	};
 
