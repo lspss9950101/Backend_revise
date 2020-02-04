@@ -1,23 +1,25 @@
-var CS_dept_code_prefix = require('./static/CS_prefix.js');
+var Course = require('./Container/Course.js');
+
+var CS_dept_code_prefix = require('./static/additional_condition.js').CS_course_code_prefix;
 
 function classifyCoursesByDefault(req){
 	let class_list = [
 		{'class': 'compulsory', 	valid: classifyCompulsory},
-		{'class': 'proElective', 	valid: classifyProElective},
+		{'class': 'service', 		valid: classifyService},
+		{'class': 'pro_elective', 	valid: classifyProElective},
 		{'class': 'uncount', 		valid: classifyUncount},
 		{'class': 'language', 		valid: classifyLanguage},
 		{'class': 'PE',			valid: classifyPE},
-		{'class': 'service', 		valid: classifyService},
 		{'class': 'art', 		valid: classifyArt},
+		{'class': 'general_old',	valid: classifyGeneral},
 		{'class': 'elective', 		valid: classifyElective},
-		{'class': 'general', 		valid: classifyGeneral},
 		{'class': 'graduate', 		valid: classifyGraduate},
 		{'class': 'addition', 		valid: classifyAddition}
 	];
 
-	req.data.courses.forEach((course) => {
+	Object.values(req.csca.courses).forEach((course) => {
 		for(let i = 0; i < class_list.length; i++){
-			if(class_list[i].valid(course)){
+			if(class_list[i].valid(course, req)){
 				req.csca.classes[class_list[i]['class']].courses.push(course);
 				break;
 			}
@@ -25,8 +27,12 @@ function classifyCoursesByDefault(req){
 	});
 }
 
-function classifyCompulsory(course){
-	return req.csca.rules.compulsory_codes[course.code] == true;
+function classifyCompulsory(course, req){
+	return req.csca.rules.compulsory.codes.some((code) => (course.code == code));
+}
+
+function classifyService(course){
+	return course.cname.includes('服務學習');
 }
 
 function classifyProElective(course){
@@ -42,15 +48,11 @@ function classifyUncount(course){
 }
 
 function classifyLanguage(course){
-	return course.type == '外文';
+	return course.type == '外語';
 }
 
 function classifyPE(course){
 	return course.cname.includes('體育');
-}
-
-function classifyService(course){
-	return course.cname.includes('服務學習');
 }
 
 function classifyArt(course){
@@ -185,17 +187,19 @@ function handlePCB(req){
 		let extra_credit_course;
 		
 		PCB1.courses[0].real_credit = 3;
-		extra_credit_course = Object.assign({}, PCB1.courses[0]);
+		extra_credit_course = Object.assign(new Course(), PCB1.courses[0]);
 		//extra_credit_course = PCB1.courses[0].copy();
 		//extra_credit_course.code += '_one';
 		extra_credit_course.real_credit = 1;
+		extra_credit_course.moved = true;
 		req.csca.classes.pro_elective.courses.push(extra_credit_course);
 
 		PCB2.courses[0].real_credit = 3;
-		extra_credit_course = Object.assign({}, PCB2.courses[0]);
+		extra_credit_course = Object.assign(new Course(), PCB2.courses[0]);
 		//extra_credit_course = PCB2.courses[0].copy();
 		//extra_credit_course.code += '_one';
 		extra_credit_course.real_credit = 1;
+		extra_credit_course.moved = true;
 		req.csca.classes.pro_elective.courses.push(extra_credit_course);
 	}else if(PCB1.ext.chemistry.length && PCB2.ext.chemistry.length){
 		PCB1.courses = [PCB1.ext.chemistry[0]];
@@ -229,7 +233,7 @@ function handlePCB(req){
 function handleService(req){
 	let service1 = false, service2 = false;
 	req.csca.classes.service.courses.forEach((course) => {
-		if(service1 == true && service2 == true)break;
+		if(service1 == true && service2 == true)return;
 		if(course.code.startsWith('DCP') && course.cname == '服務學習(一)')service1 = true; //course.code == 'DCP1194'
 		else if(course.cname.includes('服務學習(二)') || course.cname.includes('服務學習二'))service2 = true;
 	});
@@ -246,3 +250,5 @@ function handleExcessiveProElective(req){
 function handleGeneralDimension(req){
 
 }
+
+module.exports = classifyCourses;

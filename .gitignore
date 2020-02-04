@@ -1,0 +1,9 @@
+node_modules
+all_score.txt
+cos_group.txt
+graduate_rule.txt
+motion_locate.txt
+offset.txt
+on_cos.txt
+query.js
+server.js

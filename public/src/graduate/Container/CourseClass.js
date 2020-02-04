@@ -1,10 +1,10 @@
-var english_credit_blacklist;
+var english_credit_blacklist = require('./../static/additional_condition.js').english_credit_blacklist;
 
 class CourseClass{
 	constructor(title){
 		this.title = title;
 		this.credit = 0;
-		this.require = -1;
+		this.require = 0;
 		this.english_credit = 0;
 		this.courses = [];
 	}
@@ -12,9 +12,9 @@ class CourseClass{
 	calculateCredit(){
 		this.credit = 0;
 		this.english_credit = 0;
-		courses.forEach((course) => {
+		this.courses.forEach((course) => {
 			this.credit += course.real_credit;
-			if(course.typeext == '英文授課' && english_credit_blacklist.every((cname) => (course.cname != cname)) && course.code.startsWith('DCP'))
+			if(course.typeext == '英文授課' && !english_credit_blacklist.some((cname) => (course.cname == cname)) && course.code.startsWith('DCP') && Object.values(course.pass_fail).some((pass_fail) => (pass_fail)))
 				this.english_credit += course.real_credit;
 		});
 	}
@@ -32,3 +32,5 @@ class CourseClass{
 		return result;
 	}
 }
+
+module.exports = CourseClass;

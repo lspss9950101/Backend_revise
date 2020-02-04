@@ -1,16 +1,16 @@
 Progress: graduate/detail
 initContainers:					Done
-queryDB:					Not Yet
+queryDB:					Done
 mergeDuplicates:				Done
 classifyCourses:
 	classifyCoursesByDefault:	Done
 	handleCompulsory:		Done
 	handleOffset:			Not Yet
 	handlePCB:			Done
-	handleService:			Rule Unconfirmed
-	handleLanguage:			Not Yet
-	handleExcessiveProElective:	Not Yet
+	handleService:			Rule Unconfirmed. How frontend determines both I and II are taken.
+	handleLanguage:			Rule Unconfirmed. It seems similar to compulsory.
+	handleExcessiveProElective:	Rule Uncomfirmed. Which course should be move out.
 	handleGeneralDimension:		Not Yet
 handleExceptions:				Not Yet
 moveCourses:					Not Yet
-generateSummary:				Not Yet
+generateSummary:				Done

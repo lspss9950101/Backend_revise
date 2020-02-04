@@ -1,17 +1,20 @@
-function initContainers(req, res, next){
-	req.csca.data = {
-		taken_courses:		{},
-		on_courses: 		{},
-		offset_courses: 	{},
-		moved_records: 		{},
+var CourseClass = require('./Container/CourseClass.js');
 
-		compulsory_list:	{},
+function initContainers(req, res, next){
+	req.csca = {};
+
+	req.csca.data = {
+		taken_courses:		[],
+		on_courses: 		[],
+		offset_courses: 	[],
+		moved_records: 		[],
+
+		compulsory_rules:	[],
 		required_credit:	{}
 	};
 
-	req.csca.rule = {
-		compulsory:	{courses_rules: [], codes: []},
-
+	req.csca.rules = {
+		compulsory:	{course_rules: [], codes: []}
 	};
 
 	req.csca.courses = {};
@@ -23,6 +26,7 @@ function initContainers(req, res, next){
 		language:	new CourseClass('外語'),
 		general_old:	new CourseClass('通識(舊制)'),
 		general_new:	new CourseClass('通識(新制)'),
+		PE:		new CourseClass('體育'),
 		service:	new CourseClass('服務學習'),
 		art:		new CourseClass('藝文賞析'),
 		uncount:	new CourseClass('不計入畢業學分'),
@@ -33,3 +37,4 @@ function initContainers(req, res, next){
 	next();
 }
 
+module.exports = initContainers;
