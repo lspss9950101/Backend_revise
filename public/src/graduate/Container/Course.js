@@ -12,13 +12,13 @@ class Course{
 		this.original_credit = parseFloat(raw_course.cos_credit);
 		this.real_credit = parseFloat(raw_course.cos_credit);
 
-		this.year = (raw_course.cos_year || raw_course.year);
-		this.semester = raw_course.semester;
 		this.moved = false;
 		this.reason = '';
 
-		if(this.year){
-			let time_id = this.year + '-' + this.semester;
+		let year = (raw_course.cos_year || raw_course.year);
+		let semester = raw_course.semester;
+		if(year){
+			let time_id = year + '-' + semester;
 			this.score = {};
 			this.score_level = {};
 			this.pass_fail = {};
@@ -31,7 +31,6 @@ class Course{
 	}
 
 	append(course){
-		let time_id = course.year + '-' + course.semester;
 		this.score = {...this.score, ...course.score};
 		this.score_level = {...this.score_level, ...course.score_level};
 		this.pass_fail = {...this.pass_fail, ...course.pass_fail};
@@ -57,8 +56,6 @@ class Course{
 			complete:		this.pass_fail,
 			grade:			this.score_level,
 			english:		(this.typeext.includes('英文授課')), 
-			year:			this.year,
-			semester:		this.semester,
 			reason:			this.reason,
 			move:			this.moved,
 			dimension:		this.dimension

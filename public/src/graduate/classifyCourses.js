@@ -130,7 +130,13 @@ function handleCompulsory(req){
 				if(passed_idx == -1)passed_idx = 0;
 				first_passed_course = rule.ext.physic[passed_idx];
 				rule.ext.physic.splice(passed_idx, 1);
-				req.csca.classes.elective.courses = req.csca.classes.elective.courses.concat(rule.ext.physic);
+				rule.ext.physic.forEach((course) => {
+					course.moved = true;
+					if(course.type == '通識')
+						req.csca.classes.general_old.courses.push(course);
+					else
+						req.csca.classes.elective.courses.push(course);
+				});
 				rule.ext.physic = [first_passed_course];
 			}
 			if(rule.ext.chemistry.length > 1){
@@ -138,7 +144,13 @@ function handleCompulsory(req){
 				if(passed_idx == -1)passed_idx = 0;
 				first_passed_course = rule.ext.chemistry[passed_idx];
 				rule.ext.chemistry.splice(passed_idx, 1);
-				req.csca.classes.elective.courses = req.csca.classes.elective.courses.concat(rule.ext.chemistry);
+				rule.ext.chemistry.forEach((course) => {
+					course.moved = true;
+					if(course.type == '通識')
+						req.csca.classes.general_old.courses.push(course);
+					else
+						req.csca.classes.elective.courses.push(course);
+				});
 				rule.ext.chemistry = [first_passed_course];
 			}
 			if(rule.ext.biology.length > 1){
@@ -146,7 +158,13 @@ function handleCompulsory(req){
 				if(passed_idx == -1)passed_idx = 0;
 				first_passed_course = rule.ext.biology[passed_idx];
 				rule.ext.biology.splice(passed_idx, 1);
-				req.csca.classes.elective.courses = req.csca.classes.elective.courses.concat(rule.ext.biology);
+				rule.ext.biology.forEach((course) => {
+					course.moved = true;
+					if(course.type == '通識')
+						req.csca.classes.general_old.courses.push(course);
+					else
+						req.csca.classes.elective.courses.push(course);
+				});
 				rule.ext.biology = [first_passed_course];
 			}
 
@@ -156,10 +174,13 @@ function handleCompulsory(req){
 			let first_passed_course = rule.courses[passed_idx];
 			rule.courses.splice(passed_idx, 1);
 
+			rule.courses.forEach((course) => {
+				course.moved = true;
+			});
 			if(CS_dept_code_prefix.some((prefix) => (first_passed_course.code.startsWith(prefix)))){
-				req.csca.classes.pro_elective.courses = req.csca.classes.pro_elective.courses.concat(rule.courses);
+				req.csca.classes.pro_elective.courses.push(...rule.courses);
 			}else{
-				req.csca.classes.elective.courses  = req.csca.classes.elective.courses.concat(rule.courses);
+				req.csca.classes.elective.courses.push(...rule.courses);
 			}
 
 			rule.courses = [first_passed_course];
@@ -221,12 +242,13 @@ function handlePCB(req){
 		if(PCB2.courses[0])PCB2.ext.physic.splice(0, 1);
 	}
 
-	req.csca.classes.elective.courses.push(...PCB1.ext.physic);
-	req.csca.classes.elective.courses.push(...PCB2.ext.physic);
-	req.csca.classes.elective.courses.push(...PCB1.ext.chemistry);
-	req.csca.classes.elective.courses.push(...PCB2.ext.chemistry);
-	req.csca.classes.elective.courses.push(...PCB1.ext.biology);
-	req.csca.classes.elective.courses.push(...PCB2.ext.biology);
+	Array.of(...PCB1.ext.physic, ...PCB2.ext.physic, ...PCB1.ext.chemistry, ...PCB2.ext.chemistry, ...PCB1.ext.biology, ...PCB2.ext.biology).forEach((course) => {
+		course.moved = true;
+		if(course.type == '通識')
+			req.csca.classes.general_old.courses.push(course);
+		else
+			req.csca.classes.elective.courses.push(course);
+	});
 }
 
 //Rules not confirmed.
@@ -244,10 +266,27 @@ function handleLanguage(req){
 }
 
 function handleExcessiveProElective(req){
+	req.csca.classes.pro_elective.calculateCredit();
+	let required_credit = req.csca.classes.pro_elective.require;
+	let credit = req.csca.classes.pro_elective.credit;
 
+	while(credit > required_credit){
+		if(credit - required_credit < 3){
+			let one_credit_course_idx = req.csca.classes.pro_elective.courses.findIndex((course) => (course.realCredit == 1));
+			if(one_credit_course_idx == -1)break;
+			let one_credit_course = req.csca.classes.pro_elective.courses[one_credit_course_idx];
+			req.csca.classes.pro_elective.courses.splice(one_credit_course_idx, 1);
+			req.csca.classes.elective.courses.push(one_credit_course);
+		}else{
+			let three_credit_course_idx = req.csca.classes.pro_elective.courses.findIndex((course) => (course.realCredit == 3));
+			let three_credit_course = req.csca.classes.pro_elective.courses[three_credit_course_idx];
+			req.csca.classes.pro_elective.courses.splice(three_credit_course_idx, 1);
+			req.csca.classes.elective.courses.push(three_credit_course);
+		}
+	}
 }
 
-function handleGeneralDimension(req){
+function handleGeneral(req){
 
 }
 

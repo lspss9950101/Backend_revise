@@ -3,14 +3,14 @@ initContainers:					Done
 queryDB:					Done
 mergeDuplicates:				Done
 classifyCourses:
-	classifyCoursesByDefault:	Done
+	classifyCoursesByDefault:	Almost. Differential eq and Signal and system left unhandled.
 	handleCompulsory:		Done
 	handleOffset:			Not Yet
 	handlePCB:			Done
 	handleService:			Rule Unconfirmed. How frontend determines both I and II are taken.
 	handleLanguage:			Rule Unconfirmed. It seems similar to compulsory.
-	handleExcessiveProElective:	Rule Uncomfirmed. Which course should be move out.
-	handleGeneralDimension:		Not Yet
+	handleExcessiveProElective:	Done
+	handleGeneral:			Not Yet
 handleExceptions:				Not Yet
 moveCourses:					Not Yet
 generateSummary:				Done
