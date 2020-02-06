@@ -46,8 +46,8 @@ function moveCourses(req, res, next){
 		});
 	});
 
-	Object.keys(move_result).forEach((class_title) => {
-		req.csca.classes[class_title].courses.push(...move_result[class_title]);
+	Object.keys(move_results).forEach((class_title) => {
+		req.csca.classes[class_title].courses.push(...move_results[class_title]);
 	});
 
 	next();

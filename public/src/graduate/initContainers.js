@@ -29,7 +29,7 @@ function initContainers(req, res, next){
 		PE:		new CourseClass('體育'),
 		service:	new CourseClass('服務學習'),
 		art:		new CourseClass('藝文賞析'),
-		uncount:	new CourseClass('不計入畢業學分'),
+		uncount:	new CourseClass('其他不計入畢業學分'),
 		graduate:	new CourseClass('抵免研究所課程'),
 		addition:	new CourseClass('雙主修、輔系、學分學程')
 	};

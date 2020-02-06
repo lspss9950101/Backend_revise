@@ -3,6 +3,8 @@ function generateSummary(req, res, next){
 
 	req.csca.summary = [];
 
+	Object.values(req.csca.classes).forEach((course_class) => {course_class.calculateCredit()});
+
 	let classes = req.csca.classes;
 	let statistic = {
 		total: 			0,
@@ -17,7 +19,7 @@ function generateSummary(req, res, next){
 		other_require: 		classes.elective.require,
 		general: 		classes.general_old.credit,
 		general_require: 	classes.general_old.require,
-		general_new: 		classes.general_new.credit,
+		general_new: 		classes.general_new.credit.total,
 		general_new_require: 	classes.general_new.require.total,
 		pe: 			classes.PE.credit,
 		pe_require: 		classes.PE.require,
@@ -29,20 +31,27 @@ function generateSummary(req, res, next){
 		art_require: 		classes.art.require,
 		military: 		classes.uncount.credit,
 		graduate: 		classes.graduate.credit,
-		dmajor_minor_program: 	classes.addition.credit
+		dmajor_minor_program: 	classes.addition.credit,
+		exclusion:		classes.uncount.credit
 	};
 
 	Object.values(req.csca.classes).forEach((course_class) => {
-		course_class.calculateCredit();
-
-		statistic.total += course_class.credit;
-		if(isNaN(course_class.require))
-			statistic.total_require += course_class.require.total;
+		if(isNaN(course_class.credit))
+			statistic.total += course_class.credit.total;
 		else
-			statistic.total_require += course_class.require;
+			statistic.total += course_class.credit;
+
+		if(course_class.require != null){
+			if(isNaN(course_class.require))
+				statistic.total_require += course_class.require.total;
+			else
+				statistic.total_require += course_class.require;
+		}
 		statistic.english += course_class.english_credit;
 		req.csca.summary.push(course_class.format());
 	});
+
+	statistic.total -= req.csca.classes.general_old.credit;
 
 	req.csca.summary.push(statistic);
 

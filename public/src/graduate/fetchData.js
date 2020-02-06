@@ -12,6 +12,7 @@ function fetchData(req, res, next){
 		fetchMovedRecords,
 		fetchCompulsoryList,
 		fetchRequiredCredit,
+		fetchUserInfo,
 
 		completeClassDetails,
 	];
@@ -87,6 +88,15 @@ function fetchRequiredCredit(req, next){
 			elective:	credit_nums.free_credit,
 			language:	credit_nums.foreign_credit
 		};
+		next();
+	});
+}
+
+function fetchUserInfo(req, next){
+	query.ShowUserInfo(req.csca.student_id, (result, err) => {
+		if(err)next(err);
+		let info = JSON.parse(result)[0];
+		req.csca.data.user_info = info;
 		next();
 	});
 }

@@ -88,15 +88,40 @@ function classifyAddition(course){
 function classifyCourses(req, res, next){
 	classifyCoursesByDefault(req);
 	
+	excludeUnmatchedDiffEqAndSignalAndSystemFromCompulsory(req);
 	handleCompulsory(req);
+	includeMatchedDiffEqAndSignalAndSystemInProElective(req);
 	handleOffset(req);
 	handlePCB(req);
 	handleService(req);
 	handleLanguage(req);
 	handleExcessiveProElective(req);
-	handleGeneralDimension(req);
+	handleGeneral(req);
+	splitMentorTime(req);
+	splitPE(req);
+	splitArt(req);
 
 	next();
+}
+
+function excludeUnmatchedDiffEqAndSignalAndSystemFromCompulsory(req){
+	let unchanged = [], excluded = [];
+
+	req.csca.classes.compulsory.courses.forEach((course) => {
+		if(course.department != '資工系' && course.department != '電資共同'){
+			if(course.cname.startsWith('微分方程')){
+				excluded.push(course);
+				return;
+			}else if(course.cname.startsWith('訊號與系統')){
+				excluded.push(course);
+				return;
+			}
+		}
+		unchanged.push(course);
+	});
+
+	req.csca.classes.compulsory.courses = unchanged;
+	req.csca.classes.elective.courses.push(...excluded);
 }
 
 function handleCompulsory(req){
@@ -188,6 +213,26 @@ function handleCompulsory(req){
 	});
 }
 
+function includeMatchedDiffEqAndSignalAndSystemInProElective(req){
+	let unchanged = [], included = [];
+
+	req.csca.classes.elective.courses.forEach((course) => {
+		if(course.department == '資工系' || course.department == '電資共同'){
+			if(course.cname.startsWith('微分方程')){
+				included.push(course);
+				return;
+			}else if(course.cname.startsWith('訊號與系統')){
+				included.push(course);
+				return;
+			}
+		}
+		unchanged.push(course);
+	});
+
+	req.csca.classes.elective.courses = unchanged;
+	req.csca.classes.pro_elective.courses.push(...included);
+}
+
 //Rules not confirmed.
 function handleOffset(req){
 
@@ -251,18 +296,19 @@ function handlePCB(req){
 	});
 }
 
-//Rules not confirmed.
 function handleService(req){
-	let service1 = false, service2 = false;
-	req.csca.classes.service.courses.forEach((course) => {
-		if(service1 == true && service2 == true)return;
-		if(course.code.startsWith('DCP') && course.cname == '服務學習(一)')service1 = true; //course.code == 'DCP1194'
-		else if(course.cname.includes('服務學習(二)') || course.cname.includes('服務學習二'))service2 = true;
-	});
+
 }
 
 function handleLanguage(req){
-
+	switch(req.csca.data.user_info.en_certificate){
+		case 1:
+			break;
+		case 2: case 3: case 4:
+			break;
+		default:
+			break;
+	}
 }
 
 function handleExcessiveProElective(req){
@@ -287,6 +333,26 @@ function handleExcessiveProElective(req){
 }
 
 function handleGeneral(req){
+	req.csca.classes.general_new.courses = req.csca.classes.general_old.courses.map((course) => (Object.assign(new Course(), course)));
+
+	req.csca.classes.general_old.courses.forEach((course) => {
+		course.dimension = course.brief.split('/')[0];
+	});
+
+	req.csca.classes.general_new.courses.forEach((course) => {
+		course.dimension = course.brief_new.split('(')[0];
+	});
+}
+
+function splitMentorTime(req){
+
+}
+
+function splitPE(req){
+
+}
+
+function splitArt(req){
 
 }
 

@@ -3,14 +3,17 @@ initContainers:					Done
 queryDB:					Done
 mergeDuplicates:				Done
 classifyCourses:
-	classifyCoursesByDefault:	Almost. Differential eq and Signal and system left unhandled.
+	classifyCoursesByDefault:	Done
 	handleCompulsory:		Done
-	handleOffset:			Not Yet
+	handleOffset:			Not Yet. Form not confirmed.
 	handlePCB:			Done
-	handleService:			Rule Unconfirmed. How frontend determines both I and II are taken.
-	handleLanguage:			Rule Unconfirmed. It seems similar to compulsory.
+	handleService:			Done
+	handleLanguage:			Not Yet
 	handleExcessiveProElective:	Done
-	handleGeneral:			Not Yet
+	handleGeneral:			Done
+	splitMentorTime:		Not Yet
+	splitPE:			Not Yet
+	splitArt:			Not Yet
 handleExceptions:				Not Yet
-moveCourses:					Not Yet
+moveCourses:					Almost. General_old not finished.
 generateSummary:				Done
