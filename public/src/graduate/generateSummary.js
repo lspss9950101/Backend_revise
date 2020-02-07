@@ -1,6 +1,4 @@
 function generateSummary(req, res, next){
-	formatCompulsory(req);
-
 	req.csca.summary = [];
 
 	Object.values(req.csca.classes).forEach((course_class) => {course_class.calculateCredit()});
@@ -29,43 +27,34 @@ function generateSummary(req, res, next){
 		service_require: 	classes.service.require,
 		art: 			classes.art.credit,
 		art_require: 		classes.art.require,
-		military: 		classes.uncount.credit,
 		graduate: 		classes.graduate.credit,
 		dmajor_minor_program: 	classes.addition.credit,
 		exclusion:		classes.uncount.credit
 	};
 
-	Object.values(req.csca.classes).forEach((course_class) => {
-		if(isNaN(course_class.credit))
-			statistic.total += course_class.credit.total;
-		else
-			statistic.total += course_class.credit;
+	let credit_classes = [
+		'compulsory',
+		'pro_elective',
+		'elective',
+		'language',
+		'general_old'
+	];
 
-		if(course_class.require != null){
-			if(isNaN(course_class.require))
-				statistic.total_require += course_class.require.total;
-			else
-				statistic.total_require += course_class.require;
-		}
-		statistic.english += course_class.english_credit;
+	Object.values(req.csca.classes).forEach((course_class) => {
 		req.csca.summary.push(course_class.format());
 	});
 
-	statistic.total -= req.csca.classes.general_old.credit;
+	credit_classes.forEach((class_title) => {
+		statistic.total += req.csca.classes[class_title].credit;
+		statistic.total_require += req.csca.classes[class_title].require;
+		statistic.english += req.csca.classes[class_title].english_credit;
+	});
+
+	if(req.csca.classes.elective.require == 11)statistic.total_require += 2;
 
 	req.csca.summary.push(statistic);
 
 	next();
-}
-
-function formatCompulsory(req){
-	req.csca.classes.compulsory.courses = [];
-	req.csca.rules.compulsory.course_rules.forEach((rule) => {
-		if(rule.courses.length == 0)
-			req.csca.classes.compulsory.courses.push(rule.createEmptyCourse());
-		else
-			req.csca.classes.compulsory.courses.push(...rule.courses);
-	});
 }
 
 module.exports = generateSummary;

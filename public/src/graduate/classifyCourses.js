@@ -28,7 +28,11 @@ function classifyCoursesByDefault(req){
 }
 
 function classifyCompulsory(course, req){
-	return req.csca.rules.compulsory.codes.some((code) => (course.code == code));
+	if(course.cname.startsWith('微分方程') || course.cname.startsWith('訊號與系統')){
+		return (course.department == '資工系' || course.department == '電資共同');
+	}else{
+		return req.csca.rules.compulsory.codes.some((code) => (course.code == code));
+	}
 }
 
 function classifyService(course){
@@ -36,7 +40,11 @@ function classifyService(course){
 }
 
 function classifyProElective(course){
-	return CS_dept_code_prefix.some((prefix) => (course.code.startsWith(prefix)));
+	if(course.cname.startsWith('微分方程') || course.cname.startsWith('訊號與系統')){
+		return (course.department == '資工系' || course.department == '電資共同');
+	}else{
+		return CS_dept_code_prefix.some((prefix) => (course.code.startsWith(prefix)));
+	}
 }
 
 function classifyUncount(course){
@@ -88,40 +96,15 @@ function classifyAddition(course){
 function classifyCourses(req, res, next){
 	classifyCoursesByDefault(req);
 	
-	excludeUnmatchedDiffEqAndSignalAndSystemFromCompulsory(req);
 	handleCompulsory(req);
-	includeMatchedDiffEqAndSignalAndSystemInProElective(req);
 	handleOffset(req);
 	handlePCB(req);
+	formatCompulsory(req);
 	handleService(req);
 	handleLanguage(req);
-	handleExcessiveProElective(req);
-	handleGeneral(req);
-	splitMentorTime(req);
-	splitPE(req);
-	splitArt(req);
+	splitSamelyCodedCourse(req);
 
 	next();
-}
-
-function excludeUnmatchedDiffEqAndSignalAndSystemFromCompulsory(req){
-	let unchanged = [], excluded = [];
-
-	req.csca.classes.compulsory.courses.forEach((course) => {
-		if(course.department != '資工系' && course.department != '電資共同'){
-			if(course.cname.startsWith('微分方程')){
-				excluded.push(course);
-				return;
-			}else if(course.cname.startsWith('訊號與系統')){
-				excluded.push(course);
-				return;
-			}
-		}
-		unchanged.push(course);
-	});
-
-	req.csca.classes.compulsory.courses = unchanged;
-	req.csca.classes.elective.courses.push(...excluded);
 }
 
 function handleCompulsory(req){
@@ -213,26 +196,6 @@ function handleCompulsory(req){
 	});
 }
 
-function includeMatchedDiffEqAndSignalAndSystemInProElective(req){
-	let unchanged = [], included = [];
-
-	req.csca.classes.elective.courses.forEach((course) => {
-		if(course.department == '資工系' || course.department == '電資共同'){
-			if(course.cname.startsWith('微分方程')){
-				included.push(course);
-				return;
-			}else if(course.cname.startsWith('訊號與系統')){
-				included.push(course);
-				return;
-			}
-		}
-		unchanged.push(course);
-	});
-
-	req.csca.classes.elective.courses = unchanged;
-	req.csca.classes.pro_elective.courses.push(...included);
-}
-
 //Rules not confirmed.
 function handleOffset(req){
 
@@ -296,8 +259,18 @@ function handlePCB(req){
 	});
 }
 
-function handleService(req){
+function formatCompulsory(req){
+	req.csca.classes.compulsory.courses = [];
+	req.csca.rules.compulsory.course_rules.forEach((rule) => {
+		if(rule.courses.length == 0)
+			req.csca.classes.compulsory.courses.push(rule.createEmptyCourse());
+		else
+			req.csca.classes.compulsory.courses.push(...rule.courses);
+	});
+}
 
+function handleService(req){
+	//No need for extra process.
 }
 
 function handleLanguage(req){
@@ -311,49 +284,36 @@ function handleLanguage(req){
 	}
 }
 
-function handleExcessiveProElective(req){
-	req.csca.classes.pro_elective.calculateCredit();
-	let required_credit = req.csca.classes.pro_elective.require;
-	let credit = req.csca.classes.pro_elective.credit;
+function splitSamelyCodedCourse(req){
+	let course_list = [
+		{'class': 'compulsory', 'cname': '導師時間'},
+		{'class': 'PE', 'cname': '大一體育'},
+		{'class': 'art', 'cname': '藝文賞析教育'}
+	];
 
-	while(credit > required_credit){
-		if(credit - required_credit < 3){
-			let one_credit_course_idx = req.csca.classes.pro_elective.courses.findIndex((course) => (course.realCredit == 1));
-			if(one_credit_course_idx == -1)break;
-			let one_credit_course = req.csca.classes.pro_elective.courses[one_credit_course_idx];
-			req.csca.classes.pro_elective.courses.splice(one_credit_course_idx, 1);
-			req.csca.classes.elective.courses.push(one_credit_course);
-		}else{
-			let three_credit_course_idx = req.csca.classes.pro_elective.courses.findIndex((course) => (course.realCredit == 3));
-			let three_credit_course = req.csca.classes.pro_elective.courses[three_credit_course_idx];
-			req.csca.classes.pro_elective.courses.splice(three_credit_course_idx, 1);
-			req.csca.classes.elective.courses.push(three_credit_course);
+	course_list.forEach((course_detail) => {
+		let course_class = req.csca.classes[course_detail['class']];
+		let course = course_class.courses.find((course) => (course.cname.includes(course_detail.cname)));
+		if(!course)return;
+		let passed_time_id = Object.keys(course.pass_fail).find((time_id) => (course.pass_fail[time_id]));
+	
+		if(passed_time_id != -1){
+			let split_course = Object.assign(new Course(), course);
+			split_course.pass_fail = {};
+			split_course.score = {};
+			split_course.score_level = {};
+			split_course.pass_fail[passed_time_id] = course.pass_fail[passed_time_id];
+			split_course.score[passed_time_id] = course.score[passed_time_id];
+			split_course.score_level[passed_time_id] = course.score_level[passed_time_id];
+
+			course_class.courses.push(split_course);
+
+			delete course.pass_fail[passed_time_id];
+			delete course.score[passed_time_id];
+			delete course.score_level[passed_time_id];
+			course.has_passed = Object.values(course.pass_fail).some((pass_fail) => (pass_fail));
 		}
-	}
-}
-
-function handleGeneral(req){
-	req.csca.classes.general_new.courses = req.csca.classes.general_old.courses.map((course) => (Object.assign(new Course(), course)));
-
-	req.csca.classes.general_old.courses.forEach((course) => {
-		course.dimension = course.brief.split('/')[0];
 	});
-
-	req.csca.classes.general_new.courses.forEach((course) => {
-		course.dimension = course.brief_new.split('(')[0];
-	});
-}
-
-function splitMentorTime(req){
-
-}
-
-function splitPE(req){
-
-}
-
-function splitArt(req){
-
 }
 
 module.exports = classifyCourses;

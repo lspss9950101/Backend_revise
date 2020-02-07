@@ -1,19 +1,18 @@
 Progress: graduate/detail
 initContainers:					Done
-queryDB:					Done
+fetchData:					Done
 mergeDuplicates:				Done
 classifyCourses:
 	classifyCoursesByDefault:	Done
 	handleCompulsory:		Done
 	handleOffset:			Not Yet. Form not confirmed.
 	handlePCB:			Done
+	formatCompulsory:		Done
 	handleService:			Done
 	handleLanguage:			Not Yet
-	handleExcessiveProElective:	Done
-	handleGeneral:			Done
-	splitMentorTime:		Not Yet
-	splitPE:			Not Yet
-	splitArt:			Not Yet
-handleExceptions:				Not Yet
-moveCourses:					Almost. General_old not finished.
+	splitSamelyCodedCourse:		Done
+handleExceptions:				Done
+handleExcessiveProElective:			Done
+moveCourses:					Done
+handleGeneral:					Done
 generateSummary:				Done

@@ -19,17 +19,17 @@ class Course{
 
 		let year = (raw_course.cos_year || raw_course.year);
 		let semester = raw_course.semester;
+		this.score = {};
+		this.score_level = {};
+		this.pass_fail = {};
 		if(year){
 			let time_id = year + '-' + semester;
-			this.score = {};
-			this.score_level = {};
-			this.pass_fail = {};
 			this.score[time_id] = (raw_course.score || -1);
 			this.score_level[time_id] = (raw_course.score_level || '0');
 			this.pass_fail[time_id] = (raw_course.pass_fail == '通過');
 		}
 
-		this.dimension = '';
+		this.dimension = null;
 		this.department = raw_course.cos_dep;
 	}
 

@@ -32,6 +32,10 @@ class CourseClass{
 						break;
 				}
 			});
+		}else if(this.title == '體育' || this.title == '服務學習' || this.title == '藝文賞析'){
+			this.credit = 0;
+			this.english_credit = 0;
+			this.credit = this.courses.filter((course) => (course.has_passed)).length;
 		}else{
 			this.credit = 0;
 			this.english_credit = 0;

@@ -12,6 +12,7 @@ function moveCourses(req, res, next){
 		pro_elective:	[],
 		elective:	[],
 		language:	[],
+		general_old:	[],
 		service:	[],
 		graduate:	[],
 		addition:	[]
@@ -21,6 +22,7 @@ function moveCourses(req, res, next){
 		pro_elective:	[],
 		elective:	[],
 		language:	[],
+		general_old:	[],
 		service:	[],
 		graduate:	[],
 		addition:	[]
@@ -29,7 +31,8 @@ function moveCourses(req, res, next){
 	req.csca.data.moved_records.forEach((moved_record) => {
 		let move_destination = {
 			target:		moved_record.cos_cname,
-			destination:	moved_record.now_pos.startsWith('通識') ? 'general_old' : mapping[moved_record.now_pos]
+			destination:	moved_record.now_pos.startsWith('通識') ? 'general_old' : mapping[moved_record.now_pos],
+			dimension:	moved_record.now_pos.split('-')[1]
 		};
 
 		let original_position = moved_record.orig_pos.startsWith('通識') ? 'general_old' : mapping[moved_record.orig_pos];
@@ -39,10 +42,16 @@ function moveCourses(req, res, next){
 	Object.keys(move_data).forEach((class_title) => {
 		if(move_data[class_title].length == 0)return;
 		move_data[class_title].forEach((record) => {
-			let course_idx = req.csca.classes[class_title].courses.findIndex((course) => (course.cname == record.target));
-			if(course_idx == -1)return;
-			move_results[record.destination].push(req.csca.classes[class_title].courses[course_idx]);
-			req.csca.classes[class_title].courses.splice(course_idx, 1);
+			if(class_title == 'general_old' && move_data.destination == 'general_old'){
+				let course = req.csca.classes[class_title].courses.find((course) => (course.cname == record.target));
+				course.dimension = record.dimension;
+			}else{
+				let course_idx = req.csca.classes[class_title].courses.findIndex((course) => (course.cname == record.target));
+				if(course_idx == -1)return;
+				req.csca.classes[class_title].courses[course_idx].moved = true;
+				move_results[record.destination].push(req.csca.classes[class_title].courses[course_idx]);
+				req.csca.classes[class_title].courses.splice(course_idx, 1);
+			}
 		});
 	});
 

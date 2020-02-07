@@ -6,7 +6,9 @@ var fetchData = require('./../graduate/fetchData.js');
 var mergeDuplicate = require('./../graduate/mergeDuplicates.js');
 var classifyCourses = require('./../graduate/classifyCourses.js');
 var handleExceptions = require('./../graduate/handleExceptions.js');
+var handleExcessiveProElective = require('./../graduate/handleExcessiveProElective.js');
 var moveCourses = require('./../graduate/moveCourses.js');
+var handleGeneral = require('./../graduate/handleGeneral.js');
 var generateSummary = require('./../graduate/generateSummary.js');
 
 function echo(req, res, next){
@@ -20,9 +22,10 @@ router./*post*/get('/student/graduate/detail',
 	mergeDuplicate, 
 	classifyCourses, 
 	handleExceptions, 
+	handleExcessiveProElective,
 	moveCourses, 
+	handleGeneral,
 	generateSummary, 
-	//echo,
 	(req, res, next) => {
 		res.json(req.csca.summary);
 		//res.json(req.csca);
