@@ -10,8 +10,9 @@ function fetchData(req, res, next){
 		fetchOnCourses,
 		fetchOffsetCourses,
 		fetchMovedRecords,
-		fetchCompulsoryList,
-		fetchRequiredCredit,
+		fetchCompulsoryRules,
+		fetchLanguageRules,
+		fetchRequiredCreditNum,
 		fetchUserInfo,
 
 		completeClassDetails,
@@ -65,7 +66,7 @@ function fetchMovedRecords(req, next){
 	});
 }
 
-function fetchCompulsoryList(req, next){
+function fetchCompulsoryRules(req, next){
 	query.ShowCosGroup(req.csca.student_id, (result, err) => {
 		if(err)next(err);
 		let rules = JSON.parse(result);
@@ -78,7 +79,36 @@ function fetchCompulsoryList(req, next){
 	});
 }
 
-function fetchRequiredCredit(req, next){
+function fetchLanguageRules(req, next){
+	let dummy_raw_data_freshman_one = {
+		cos_cname:	'大一英文（一）',
+		cos_ename:	'Freshman English (I)',
+		type:		'外語',
+		cos_codes:	[]
+	};
+	let dummy_raw_data_freshman_two = {
+		cos_cname:	'大一英文（二）',
+		cos_ename:	'Freshman English (II)',
+		type:		'外語',
+		cos_codes:	[]
+	};
+	let dummy_raw_data_advanced = {
+		cos_cname:	'進階英文',
+		cos_ename:	'',
+		type:		'外語',
+		cos_codes:	[]
+	};
+
+	req.csca.rules.language = {
+		freshman_one:	new CourseRule(dummy_raw_data_freshman_one),
+		freshman_two:	new CourseRule(dummy_raw_data_freshman_two),
+		advanced:	new CourseRule(dummy_raw_data_advanced)
+	};
+
+	next();
+}
+
+function fetchRequiredCreditNum(req, next){
 	query.ShowGraduateRule(req.csca.student_id, (result, err) => {
 		if(err)next(err);
 		let credit_nums = JSON.parse(result)[0];

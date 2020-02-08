@@ -2,6 +2,20 @@ var Course = require('./Container/Course.js');
 
 var CS_dept_code_prefix = require('./static/additional_condition.js').CS_course_code_prefix;
 
+function classifyCourses(req, res, next){
+	classifyCoursesByDefault(req);
+	
+	handleCompulsory(req);
+	handleOffset(req);
+	handlePCB(req);
+	formatCompulsory(req);
+	handleService(req);
+	handleLanguage(req);
+	splitSamelyCodedCourse(req);
+
+	next();
+}
+
 function classifyCoursesByDefault(req){
 	let class_list = [
 		{'class': 'compulsory', 	valid: classifyCompulsory},
@@ -93,20 +107,6 @@ function classifyAddition(course){
 //
 //
 
-function classifyCourses(req, res, next){
-	classifyCoursesByDefault(req);
-	
-	handleCompulsory(req);
-	handleOffset(req);
-	handlePCB(req);
-	formatCompulsory(req);
-	handleService(req);
-	handleLanguage(req);
-	splitSamelyCodedCourse(req);
-
-	next();
-}
-
 function handleCompulsory(req){
 	req.csca.classes.compulsory.courses.forEach((course) => {
 		for(let i = 0; i < req.csca.rules.compulsory.course_rules.length; i++){
@@ -118,6 +118,7 @@ function handleCompulsory(req){
 	});
 
 	req.csca.rules.compulsory.course_rules.forEach((rule) => {
+		if(rule.cname == '導師時間')return;
 		if(rule.cname.startsWith('物化生')){
 			rule.ext = {
 				physic: [],
@@ -274,13 +275,16 @@ function handleService(req){
 }
 
 function handleLanguage(req){
-	switch(req.csca.data.user_info.en_certificate){
-		case 1:
-			break;
-		case 2: case 3: case 4:
-			break;
-		default:
-			break;
+	if(req.csca.data.user_info.en_certificate == 1){
+		
+	}else{
+		req.csca.classes.language.courses.forEach((course) => {
+			switch(course.cname){
+				case '':
+				case '':
+				
+			}
+		});
 	}
 }
 
@@ -299,6 +303,7 @@ function splitSamelyCodedCourse(req){
 	
 		if(passed_time_id != -1){
 			let split_course = Object.assign(new Course(), course);
+
 			split_course.pass_fail = {};
 			split_course.score = {};
 			split_course.score_level = {};

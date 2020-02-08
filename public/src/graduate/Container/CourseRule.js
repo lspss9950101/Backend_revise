@@ -4,6 +4,7 @@ class CourseRule{
 	constructor(raw_rule){
 		this.cname = raw_rule.cos_cname;
 		this.ename = raw_rule.cos_ename;
+		this.type = raw_rule.cos_type;
 		this.codes = raw_rule.cos_codes;
 		this.courses = [];
 	}
@@ -15,12 +16,10 @@ class CourseRule{
 			score:		'',
 			cos_code:	'',
 			cos_credit:	0,
-			cos_type:	'',
+			cos_type:	this.type,
 			pass_fail:	'',
-			score_level:	{},
+			score_level:	'',
 			cos_typeext:	'',
-			cos_year:	'',
-			semester:	'',
 			brief:		'',
 			brief_new:	''
 		};

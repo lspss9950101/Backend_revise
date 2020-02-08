@@ -9,10 +9,8 @@ classifyCourses:
 	handlePCB:			Done
 	formatCompulsory:		Done
 	handleService:			Done
-	handleLanguage:			Not Yet
+	handleLanguage:			Not Yet. Rules not confirmed.
 	splitSamelyCodedCourse:		Done
 handleExceptions:				Done
-handleExcessiveProElective:			Done
-moveCourses:					Done
-handleGeneral:					Done
+followRemainingRules:				Done
 generateSummary:				Done
