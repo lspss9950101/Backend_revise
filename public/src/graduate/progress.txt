@@ -1,0 +1,16 @@
+Progress: graduate/detail
+initContainers:					Done
+fetchData:					Done
+mergeDuplicates:				Done
+classifyCourses:
+	classifyCoursesByDefault:	Done
+	handleCompulsory:		Done
+	handleOffset:			Done
+	handlePCB:			Done
+	formatCompulsory:		Done
+	handleService:			Done
+	handleLanguage:			Done
+	splitSamelyCodedCourse:		Done
+handleExceptions:				Done
+followRemainingRules:				Done
+generateSummary:				Done
