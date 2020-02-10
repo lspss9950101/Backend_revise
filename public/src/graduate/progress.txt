@@ -5,7 +5,7 @@ mergeDuplicates:				Done
 classifyCourses:
 	classifyCoursesByDefault:	Done
 	handleCompulsory:		Done
-	handleOffset:			Not Yet. Form not confirmed.
+	handleOffset:			Done
 	handlePCB:			Done
 	formatCompulsory:		Done
 	handleService:			Done

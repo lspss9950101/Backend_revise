@@ -200,7 +200,24 @@ function handleCompulsory(req){
 
 //Rules not confirmed.
 function handleOffset(req){
-
+	let english_offset = req.csca.data.offset_courses.find((course) => (course.cos_cname == '外語榮譽學分'));
+	if(english_offset){
+		let parsed_raw_course = {
+			cos_code:	english_offset.cos_code,
+			cos_cname:	english_offset.cos_cname,
+			cos_ename:	'',
+			cos_type:	english_offset.cos_type,
+			brief:		english_offset.brief,
+			cos_credit:	english_offset.credit,
+			cos_year:	english_offset.apply_year,
+			semester:	english_offset.apply_semester,
+			score:		english_offset.score,
+			pass_fail:	'通過'
+		};
+		let course = new Course(parsed_raw_course);
+		course.reason = 'free2';
+		req.csca.classes.language.courses.push(course);
+	}
 }
 
 function handlePCB(req){

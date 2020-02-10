@@ -5,6 +5,17 @@ var async_flow = require('asynchronous-flow');
 var query = require('./../../../query.js');
 
 function fetchData(req, res, next){
+	fetchDataInParallel(req)
+	.then(() => {
+		completeClassDetails(req);
+		next();
+	})
+	.catch((err) => {
+		console.log(err);
+	})
+}
+
+async function fetchDataInParallel(req){
 	let funcs = [
 		fetchTakenCourses,
 		fetchOnCourses,
@@ -13,73 +24,73 @@ function fetchData(req, res, next){
 		fetchCompulsoryRules,
 		fetchLanguageRules,
 		fetchRequiredCreditNum,
-		fetchUserInfo,
-
-		completeClassDetails,
+		fetchUserInfo
 	];
 
-	let flow = new async_flow();
-	flow.setArgs(req)
-		.setErrorHandler((err) => {console.log('Error : ', err)})
-		.flow(...funcs, (arg) => {
-			next();
-		});
+	let promise_list = [];
+	funcs.forEach((func) => {
+		promise_list.push(new Promise((resolve, reject) => {
+			func(req, resolve, reject);
+		}));
+	});
+
+	return await Promise.all(promise_list);
 }
 
-function fetchTakenCourses(req, next){
+function fetchTakenCourses(req, resolve, reject){
 	query.ShowUserAllScore(req.csca.student_id, (result, err) => {
-		if(err)next(err);
+		if(err)reject(err);
 		let courses = JSON.parse(result);
 		courses.forEach((course) => {
 			req.csca.data.taken_courses.push(new Course(course));
 		});
-		next();
+		resolve();
 	});
 }
 
-function fetchOnCourses(req, next){
+function fetchOnCourses(req, resolve, reject){
 	query.ShowUserOnCos(req.csca.student_id, (result, err) => {
-		if(err)next(err);
+		if(err)reject(err);
 		let courses = JSON.parse(result);
 		courses.forEach((course) => {
 			req.csca.data.on_courses.push(new Course(course));
 		});
-		next();
+		resolve();
 	});
 }
 
-function fetchOffsetCourses(req, next){
+function fetchOffsetCourses(req, resolve, reject){
 	query.ShowUserOffset(req.csca.student_id, (result, err) => {
-		if(err)next(err);
+		if(err)reject(err);
 		let offsets = JSON.parse(result);
 		req.csca.data.offset_courses = offsets;
-		next();
+		resolve();
 	});
 }
 
-function fetchMovedRecords(req, next){
+function fetchMovedRecords(req, resolve, reject){
 	query.ShowCosMotionLocate(req.csca.student_id, (result, err) => {
-		if(err)next(err);
+		if(err)reject(err);
 		let records = JSON.parse(result);
 		req.csca.data.moved_records = records;
-		next();
+		resolve();
 	});
 }
 
-function fetchCompulsoryRules(req, next){
+function fetchCompulsoryRules(req, resolve, reject){
 	query.ShowCosGroup(req.csca.student_id, (result, err) => {
-		if(err)next(err);
+		if(err)reject(err);
 		let rules = JSON.parse(result);
 		req.csca.data.compulsory_rules = rules;
 		rules.forEach((rule) => {
 			req.csca.rules.compulsory.course_rules.push(new CourseRule(rule));
 			req.csca.rules.compulsory.codes.push(...rule.cos_codes);
 		});
-		next();
+		resolve();
 	});
 }
 
-function fetchLanguageRules(req, next){
+function fetchLanguageRules(req, resolve, reject){
 	let dummy_raw_data_freshman_one = {
 		cos_cname:	'大一英文（一）',
 		cos_ename:	'Freshman English (I)',
@@ -105,12 +116,12 @@ function fetchLanguageRules(req, next){
 		advanced:	new CourseRule(dummy_raw_data_advanced)
 	};
 
-	next();
+	resolve();
 }
 
-function fetchRequiredCreditNum(req, next){
+function fetchRequiredCreditNum(req, resolve, reject){
 	query.ShowGraduateRule(req.csca.student_id, (result, err) => {
-		if(err)next(err);
+		if(err)reject(err);
 		let credit_nums = JSON.parse(result)[0];
 		req.csca.data.required_credit = {
 			compulsory:	credit_nums.require_credit,
@@ -118,20 +129,20 @@ function fetchRequiredCreditNum(req, next){
 			elective:	credit_nums.free_credit,
 			language:	credit_nums.foreign_credit
 		};
-		next();
+		resolve();
 	});
 }
 
-function fetchUserInfo(req, next){
+function fetchUserInfo(req, resolve, reject){
 	query.ShowUserInfo(req.csca.student_id, (result, err) => {
-		if(err)next(err);
+		if(err)reject(err);
 		let info = JSON.parse(result)[0];
 		req.csca.data.user_info = info;
-		next();
+		resolve();
 	});
 }
 
-function completeClassDetails(req, next){
+function completeClassDetails(req){
 	req.csca.classes.compulsory.require = parseFloat(req.csca.data.required_credit.compulsory);
 	req.csca.classes.pro_elective.require = parseFloat(req.csca.data.required_credit.pro_elective);
 	req.csca.classes.elective.require = parseFloat(req.csca.data.required_credit.elective);
@@ -147,8 +158,6 @@ function completeClassDetails(req, next){
 	req.csca.classes.PE.require = 6;
 	req.csca.classes.service.require = 2;
 	req.csca.classes.art.require = 2;
-	
-	next();
 }
 
 module.exports = fetchData;

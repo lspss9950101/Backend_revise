@@ -13,7 +13,10 @@ class Course{
 		this.real_credit = parseFloat(raw_course.cos_credit);
 
 		this.moved = false;
-		this.reason = (raw_course.year ? 'now' : '');
+		if(raw_course.year)this.reason = 'now';
+		else if(raw_course.offset_type == '抵免')this.reason = 'free1';
+		else if(raw_course.offset_type == '免修')this.reason = 'free2';
+		else this.reason = '';
 
 		this.has_passed = (raw_course.pass_fail == '通過');
 
