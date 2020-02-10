@@ -21,10 +21,11 @@ class CourseRule{
 			score_level:	'',
 			cos_typeext:	'',
 			brief:		'',
-			brief_new:	''
+			brief_new:	'',
+			cos_dep:	''
 		};
 
-		return new Course(dummy_raw_course);
+		return new Course(dummy_raw_course, true);
 	}
 }
 

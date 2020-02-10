@@ -8,6 +8,7 @@ function classifyCourses(req, res, next){
 	handleCompulsory(req);
 	handleOffset(req);
 	handlePCB(req);
+	handleMentorTime(req);
 	formatCompulsory(req);
 	handleService(req);
 	handleLanguage(req);
@@ -251,12 +252,19 @@ function handlePCB(req){
 		if(PCB2.courses[0])PCB2.ext.physic.splice(0, 1);
 	}
 
-	Array.of(...PCB1.ext.physic, ...PCB2.ext.physic, ...PCB1.ext.chemistry, ...PCB2.ext.chemistry, ...PCB1.ext.biology, ...PCB2.ext.biology).forEach((course) => {
+	[...PCB1.ext.physic, ...PCB2.ext.physic, ...PCB1.ext.chemistry, ...PCB2.ext.chemistry, ...PCB1.ext.biology, ...PCB2.ext.biology].forEach((course) => {
 		course.moved = true;
 		if(course.type == '通識')
 			req.csca.classes.general_old.courses.push(course);
 		else
 			req.csca.classes.elective.courses.push(course);
+	});
+}
+
+function handleMentorTime(req){
+	let course_rule = req.csca.rules.compulsory.course_rules.find((rule) => (rule.cname == '導師時間'));
+	course_rule.courses.forEach((course) => {
+		if(course.department != '資工系' && !course.is_dummy)course.reason = 'notCS';
 	});
 }
 
@@ -271,20 +279,60 @@ function formatCompulsory(req){
 }
 
 function handleService(req){
-	//No need for extra process.
+	req.csca.classes.service.courses.filter((course) => (course.cname == '服務學習(一)')).forEach((course) => {
+		if(course.department != '資工系' && !course.is_dummy)course.reason = 'notCS';
+	});
 }
 
 function handleLanguage(req){
-	if(req.csca.data.user_info.en_certificate == 1){
-		
-	}else{
-		req.csca.classes.language.courses.forEach((course) => {
-			switch(course.cname){
-				case '':
-				case '':
-				
+	switch(req.csca.data.user_info_en_certificate){
+		case 1:{
+			break;
+		}
+		case 2: case 3: case 4:{
+			if(req.csca.classes.language.courses.length > 4){
+				while(req.csca.classes.language.courses.length > 4){
+					req.csca.classes.elective.courses.push(req.csca.classes.language.courses[0]);
+					req.csca.classes.language.courses.splice(0, 1);
+				}
+				break;
+			}else{
+				let empty_advanced = req.csca.rules.language.advanced.createEmptyCourse();
+				while(req.csca.classes.language.courses.length < 4)
+					req.csca.classes.language.courses.push(empty_advanced);
+				break;
 			}
-		});
+		}
+		default:{
+			let freshman_one = null;
+			let freshman_two = null;
+			let advanced = [];
+			let other_language = [];
+
+			req.csca.classes.language.courses.forEach((course) => {
+				if(course.cname == '大一英文（一）')freshman_one = course;
+				else if(course.cname == '大一英文（二）')freshman_two = course;
+				else if(course.cname.includes('英文'))advanced.push(course);
+				else other_language.push(course);
+			});
+
+			if(!freshman_one)
+				freshman_one = req.csca.rules.language.freshman_one.createEmptyCourse();
+			if(!freshman_two)
+				freshman_two = req.csca.rules.language.freshman_two.createEmptyCourse();
+			
+			let empty_advanced = req.csca.rules.language.advanced.createEmptyCourse();
+			while(advanced.length < 2)advanced.push(empty_advanced);
+			for(let i = 0; i < 2; i++){
+				advanced[i].realCredit = 0;
+				if(advanced[i].reason == '')advanced[i].reason = 'english';
+			}
+			while(advanced.length + other_language.length < 4)advanced.push(empty_advanced);
+
+			req.csca.classes.language.courses = [freshman_one, freshman_two, ...advanced, ...other_language];
+
+			break;
+		}
 	}
 }
 

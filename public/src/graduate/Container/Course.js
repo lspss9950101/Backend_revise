@@ -1,5 +1,5 @@
 class Course{
-	constructor(raw_course){
+	constructor(raw_course, is_dummy){
 		if(!raw_course)return;
 		this.code = raw_course.cos_code;
 		this.cname = raw_course.cos_cname;
@@ -13,7 +13,7 @@ class Course{
 		this.real_credit = parseFloat(raw_course.cos_credit);
 
 		this.moved = false;
-		this.reason = '';
+		this.reason = (raw_course.year ? 'now' : '');
 
 		this.has_passed = (raw_course.pass_fail == '通過');
 
@@ -31,6 +31,7 @@ class Course{
 
 		this.dimension = null;
 		this.department = raw_course.cos_dep;
+		this.is_dummy = (is_dummy == true);
 	}
 
 	append(course){

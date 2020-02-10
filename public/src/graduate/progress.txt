@@ -9,7 +9,7 @@ classifyCourses:
 	handlePCB:			Done
 	formatCompulsory:		Done
 	handleService:			Done
-	handleLanguage:			Not Yet. Rules not confirmed.
+	handleLanguage:			Done
 	splitSamelyCodedCourse:		Done
 handleExceptions:				Done
 followRemainingRules:				Done

@@ -83,19 +83,19 @@ function fetchLanguageRules(req, next){
 	let dummy_raw_data_freshman_one = {
 		cos_cname:	'大一英文（一）',
 		cos_ename:	'Freshman English (I)',
-		type:		'外語',
+		cos_type:	'外語',
 		cos_codes:	[]
 	};
 	let dummy_raw_data_freshman_two = {
 		cos_cname:	'大一英文（二）',
 		cos_ename:	'Freshman English (II)',
-		type:		'外語',
+		cos_type:	'外語',
 		cos_codes:	[]
 	};
 	let dummy_raw_data_advanced = {
 		cos_cname:	'進階英文',
 		cos_ename:	'',
-		type:		'外語',
+		cos_type:	'外語',
 		cos_codes:	[]
 	};
 
