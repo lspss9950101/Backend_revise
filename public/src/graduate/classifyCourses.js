@@ -302,7 +302,7 @@ function handleService(req){
 }
 
 function handleLanguage(req){
-	switch(req.csca.data.user_info_en_certificate){
+	switch(req.csca.data.user_info.en_certificate){
 		case '1':{
 			break;
 		}
