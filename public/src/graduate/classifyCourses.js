@@ -375,7 +375,7 @@ function splitSamelyCodedCourse(req){
 				split_course.score[passed_time_id] = course.score[passed_time_id];
 				split_course.score_level[passed_time_id] = course.score_level[passed_time_id];
 
-				course_class.courses.splice(course_idx, 0, split_course);
+				course_class.courses.push(split_course);
 
 				delete course.pass_fail[passed_time_id];
 				delete course.score[passed_time_id];
