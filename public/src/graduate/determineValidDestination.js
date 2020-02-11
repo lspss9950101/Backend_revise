@@ -140,7 +140,7 @@ function validateGraduate(req, course){
 	return destination;
 }
 
-function validateAddition(req, resolve, reject){
+function validateAddition(req, course){
 	let destination = null;
 	if(course.type == '必修' && CS_codes_prefix.some((prefix) => (course.code.startsWith(prefix))))
 		destination = [];
