@@ -1,3 +1,5 @@
+var query = require('./../../../../../db/msql');
+
 function getGraduateCheck(req, res, next){
 	req.csca = {};
 	fetchDataInParallel(req)
