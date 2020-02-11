@@ -12,6 +12,7 @@ var handleExceptions = require('./../graduate/handleExceptions.js');
 var followRemainingRules = require('./../graduate/followRemainingRules.js');
 var generateSummary = require('./../graduate/generateSummary.js');
 var determineValidDestination = require('./../graduate/determineValidDestination.js');
+var getGraduateCheck = require('./../graduate/getGraduateCheck.js');
 
 function echo(req, res, next){
 	console.log(require('util').inspect(req.csca, false, null, true));
@@ -41,7 +42,15 @@ router.post('/students/graduate/legalMoveTarget',
 	mergeDuplicate,
 	determineValidDestination,
 	(req, res) => {
-		res.json(req.csca.legalTarget);
+		res.json(req.csca.legal_target);
+	}
+);
+
+router.get('/students/graduate/check',
+	getStudentId,
+	getGraduateCheck,
+	(req, res) => {
+		res.json(req.csca.check_state);
 	}
 );
 
