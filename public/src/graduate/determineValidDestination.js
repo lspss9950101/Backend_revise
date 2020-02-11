@@ -95,7 +95,7 @@ function validateGeneral(req, course){
 	let course_data = Object.values(req.csca.courses).find((single_course_data) => (course.code == single_course_data.code));
 	if(course_data.type == '必修' && CS_codes_prefix.some((prefix) => (course.code.startsWith(prefix))))
 		destination = [];
-	else if(course.brief)
+	else if(course_data.brief)
 		destination = ['通識(舊制)-' + course_data.brief.split('/'[0])];
 	else if(course.code.startsWith('MIN') && course.type == '選修')
 		destination = ['通識(舊制)-自然'];
