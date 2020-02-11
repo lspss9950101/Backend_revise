@@ -2,6 +2,7 @@ var query = require('./../../../../../db/msql');
 
 function getGraduateCheck(req, res, next){
 	req.csca = {};
+	req.csca.student_id = res.locals.studentId;
 	fetchDataInParallel(req)
 	.then(() => {
 		let default_field;
