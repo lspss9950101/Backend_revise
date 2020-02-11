@@ -20,7 +20,7 @@ function DlabAndMicroControllerBefore105(req){
 			target_course.real_credit = 2;
 		}
 
-		target_course = req.csca.compulsory.courses.find((course) => (course.cname == '微處理機系統實驗'));
+		target_course = req.csca.classes.compulsory.courses.find((course) => (course.cname == '微處理機系統實驗'));
 		if(target_course != null){
 			extra_one_credit_course = Object.assign(new Course(), target_course);
 			extra_one_credit_course.real_credit = 1;
