@@ -362,11 +362,13 @@ function splitSamelyCodedCourse(req){
 
 	course_list.forEach((course_detail) => {
 		let course_class = req.csca.classes[course_detail['class']];
-		let course;
+		let course, course_idx;
 		if(course_detail.specified){
-			course = course_class.courses.find((course) => (course.cname == course_detail.cname));
+			course_idx = course_class.courses.findIndex((course) => (course.cname == course_detail.cname));
+			course = course_class.courses[course_idx];
 		}else{
-			course = course_class.courses.find((course) => (course.cname.includes(course_detail.cname)));
+			course_idx = course_class.courses.find((course) => (course.cname.includes(course_detail.cname)));
+			course = course_class.courses[course_idx];
 		}
 		if(!course)return;
 		
@@ -381,7 +383,7 @@ function splitSamelyCodedCourse(req){
 			split_course.score[passed_time_id] = course.score[passed_time_id];
 			split_course.score_level[passed_time_id] = course.score_level[passed_time_id];
 
-			course_class.courses.push(split_course);
+			course_class.courses.splice(course_idx, 0, split_course);
 
 			delete course.pass_fail[passed_time_id];
 			delete course.score[passed_time_id];
