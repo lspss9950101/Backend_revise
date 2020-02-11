@@ -43,11 +43,11 @@ function classifyCoursesByDefault(req){
 }
 
 function classifyCompulsory(course, req){
-	if(course.cname.startsWith('微分方程') || course.cname.startsWith('訊號與系統')){
-		return (course.department == '資工系' || course.department == '電資共同');
-	}else{
-		return req.csca.rules.compulsory.codes.some((code) => (course.code == code));
-	}
+	if(req.csca.rules.compulsory.codes.some((code) => (course.code == code))){
+		if(course.cname.startsWith('微分方程') || course.cname.startsWith('訊號與系統')){
+			return (course.department == '資工系' || course.department == '電資共同');
+		}else return true;
+	}else return false;
 }
 
 function classifyService(course){
