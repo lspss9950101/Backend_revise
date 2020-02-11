@@ -1,6 +1,6 @@
 var Course = require('./Container/Course.js');
 
-var CS_dept_code_prefix = require('./static/additional_condition.js').CS_course_code_prefix;
+var CS_dept_code_prefix = require('./static/additional_condition.js').CS_course_codes_prefix;
 
 function classifyCourses(req, res, next){
 	classifyCoursesByDefault(req);
