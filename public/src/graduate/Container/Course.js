@@ -27,7 +27,7 @@ class Course{
 		this.pass_fail = {};
 		if(year){
 			let time_id = year + '-' + semester;
-			this.score[time_id] = (raw_course.score || -1);
+			this.score[time_id] = (parseInt(raw_course.score) || -1);
 			this.score_level[time_id] = (raw_course.score_level || '0');
 			this.pass_fail[time_id] = (raw_course.pass_fail == '通過');
 		}
@@ -62,7 +62,7 @@ class Course{
 			realCredit:		this.real_credit,
 			originalCredit:		this.original_credit,
 			type:			this.type,
-			complete:		this.pass_fail,
+			complete:		this.has_passed,
 			grade:			this.score_level,
 			english:		(this.typeext.includes('英文授課')), 
 			reason:			this.reason,

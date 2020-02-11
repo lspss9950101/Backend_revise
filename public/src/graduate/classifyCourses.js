@@ -355,18 +355,25 @@ function handleLanguage(req){
 
 function splitSamelyCodedCourse(req){
 	let course_list = [
-		{'class': 'compulsory', 'cname': '導師時間'},
-		{'class': 'PE', 'cname': '大一體育'},
-		{'class': 'art', 'cname': '藝文賞析教育'}
+		{'class': 'compulsory', 'cname': '導師時間', 'specified': false},
+		{'class': 'PE', 'cname': '體育', 'specified': false},
+		{'class': 'art', 'cname': '藝文賞析教育', 'specified': true}
 	];
 
 	course_list.forEach((course_detail) => {
 		let course_class = req.csca.classes[course_detail['class']];
-		let course = course_class.courses.find((course) => (course.cname.includes(course_detail.cname)));
+		let course, course_idx;
+		if(course_detail.specified){
+			course_idx = course_class.courses.findIndex((course) => (course.cname == course_detail.cname));
+			course = course_class.courses[course_idx];
+		}else{
+			course_idx = course_class.courses.findIndex((course) => (course.cname.includes(course_detail.cname)));
+			course = course_class.courses[course_idx];
+		}
 		if(!course)return;
+		
 		let passed_time_id = Object.keys(course.pass_fail).find((time_id) => (course.pass_fail[time_id]));
-	
-		if(passed_time_id != -1){
+		while(Object.keys(course.pass_fail).filter((time_id) => (course.pass_fail[time_id])).length > 1){
 			let split_course = Object.assign(new Course(), course);
 
 			split_course.pass_fail = {};
@@ -376,12 +383,14 @@ function splitSamelyCodedCourse(req){
 			split_course.score[passed_time_id] = course.score[passed_time_id];
 			split_course.score_level[passed_time_id] = course.score_level[passed_time_id];
 
-			course_class.courses.push(split_course);
+			course_class.courses.splice(course_idx, 0, split_course);
 
 			delete course.pass_fail[passed_time_id];
 			delete course.score[passed_time_id];
 			delete course.score_level[passed_time_id];
 			course.has_passed = Object.values(course.pass_fail).some((pass_fail) => (pass_fail));
+
+			passed_time_id = Object.keys(course.pass_fail).find((time_id) => (course.pass_fail[time_id]));
 		}
 	});
 }

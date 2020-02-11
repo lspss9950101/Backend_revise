@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
+var csrfProtection = require('csurf')();
+var getStudentId = require('../../../../user/common/handler/getStudentId').getStudentId.studentId;
+
 var initContainers = require('./../graduate/initContainers.js');
 var fetchData = require('./../graduate/fetchData.js');
 var mergeDuplicate = require('./../graduate/mergeDuplicates.js');
@@ -14,8 +17,10 @@ function echo(req, res, next){
 	next();
 }
 
-router./*post*/get('/student/graduate/detail', 
-	initContainers, 
+router.post('/students/graduate/detail', 
+	csrfProtection,
+	initContainers,
+	getStudentId,
 	fetchData,
 	mergeDuplicate, 
 	classifyCourses, 
