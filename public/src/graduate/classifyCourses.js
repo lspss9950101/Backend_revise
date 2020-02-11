@@ -355,7 +355,7 @@ function handleLanguage(req){
 
 function splitSamelyCodedCourse(req){
 	let course_list = [
-		{'class': 'compulsory', 'cname': '導師時間', 'specified': true},
+		{'class': 'compulsory', 'cname': '導師時間', 'specified': false},
 		{'class': 'PE', 'cname': '體育', 'specified': false},
 		{'class': 'art', 'cname': '藝文賞析教育', 'specified': true}
 	];
@@ -367,7 +367,7 @@ function splitSamelyCodedCourse(req){
 			course_idx = course_class.courses.findIndex((course) => (course.cname == course_detail.cname));
 			course = course_class.courses[course_idx];
 		}else{
-			course_idx = course_class.courses.find((course) => (course.cname.includes(course_detail.cname)));
+			course_idx = course_class.courses.findIndex((course) => (course.cname.includes(course_detail.cname)));
 			course = course_class.courses[course_idx];
 		}
 		if(!course)return;
