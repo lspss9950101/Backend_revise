@@ -82,10 +82,22 @@ function fetchCompulsoryRules(req, resolve, reject){
 		if(err)reject(err);
 		let rules = JSON.parse(result);
 		req.csca.data.compulsory_rules = rules;
-		rules.forEach((rule) => {
-			req.csca.rules.compulsory.course_rules.push(new CourseRule(rule));
-			req.csca.rules.compulsory.codes.push(...rule.cos_codes);
-		});
+		if(req.body.professional_field == 0){
+			rules.filter((rule) => (rule.type == '網路' || rule.type == '必修')).forEach((rule) => {
+				req.csca.rules.compulsory.course_rules.push(new CourseRule(rule));
+				req.csca.rules.compulsory.codes.push(...rule.cos_codes);
+			});
+		}else if(req.body.professional_field == 1){
+			rules.filter((rule) => (rule.type == '多媒體' || rule.type == '必修')).forEach((rule) => {
+				req.csca.rules.compulsory.course_rules.push(new CourseRule(rule));
+				req.csca.rules.compulsory.codes.push(...rule.cos_codes);
+			});
+		}else{
+			rules.filter((rule) => (rule.type == '必修')).forEach((rule) => {
+				req.csca.rules.compulsory.course_rules.push(new CourseRule(rule));
+				req.csca.rules.compulsory.codes.push(...rule.cos_codes);
+			});
+		}
 		resolve();
 	});
 }
