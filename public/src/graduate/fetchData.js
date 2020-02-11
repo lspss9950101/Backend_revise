@@ -1,8 +1,7 @@
 var Course = require('./Container/Course.js');
 var CourseRule = require('./Container/CourseRule.js');
 
-var async_flow = require('asynchronous-flow');
-var query = require('./../../../query.js');
+var query = require('./../../../../../db/msql');
 
 function fetchData(req, res, next){
 	fetchDataInParallel(req)
