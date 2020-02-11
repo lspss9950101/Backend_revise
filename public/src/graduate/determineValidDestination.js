@@ -11,8 +11,7 @@ function determineValidDestination(req, res, next){
 
 	determineValidDestinationInParallel(req, course)
 	.then((destinations) => {
-		destinations = destinations[0];
-		destinations.reduce((acc, val) => val.length ? acc.concat(val) : acc);
+		destinations = destinations.reduce((acc, val) => val.length ? acc.concat(val) : acc);
 		req.csca.legalTarget = destinations;
 		next();
 	});
