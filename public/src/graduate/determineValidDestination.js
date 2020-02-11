@@ -89,7 +89,7 @@ function validateLanguage(req, course){
 
 function validateGeneral(req, course){
 	let destination = null;
-	if(type != '通識')return [];
+	if(course.type != '通識')return [];
 
 	let course_data = Object.values(req.csca.courses).find((single_course_data) => (course.code == single_course_data.code));
 	if(course_data.type == '必修' && CS_codes_prefix.some((prefix) => (course.code.startsWith(prefix))))
@@ -115,7 +115,7 @@ function validatePE(req, course){
 
 function validateService(req, course){
 	let destination = null;
-	if(type == '服務學習' || type == '通識服務學習')
+	if(course.type == '服務學習' || course.type == '通識服務學習')
 		destination = ['服務學習'];
 	else
 		destination = [];
@@ -133,7 +133,7 @@ function validateArt(req, course){
 
 function validateGraduate(req, course){
 	let destination = null;
-	if(graduate_codes_prefix.some((code_prefix) => (course.code.startsWith(code_prefix))) || type == '大學部修研究所課程')
+	if(graduate_codes_prefix.some((code_prefix) => (course.code.startsWith(code_prefix))) || course.type == '大學部修研究所課程')
 		destination = ['抵免研究所課程'];
 	else
 		destination = [];
