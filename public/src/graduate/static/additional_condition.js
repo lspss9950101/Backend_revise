@@ -1,4 +1,4 @@
-module.exports.CS_course_code_prefix = [
+module.exports.CS_course_codes_prefix = [
 	'DCP',
 	'IOC',
 	'IOE',
