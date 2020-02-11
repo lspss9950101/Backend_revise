@@ -1,4 +1,4 @@
-module.exports.CS_course_code_prefix = [
+module.exports.CS_course_codes_prefix = [
 	'DCP',
 	'IOC',
 	'IOE',
@@ -6,7 +6,7 @@ module.exports.CS_course_code_prefix = [
 	'IDS'
 ];
 
-module.exports.EE_codes = [
+module.exports.EE_course_codes = [
 	'UEE2101',
 	'DEE2548',
 	'DEE2542',
