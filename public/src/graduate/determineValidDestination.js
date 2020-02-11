@@ -1,5 +1,5 @@
-var CS_codes_prefix = require('./static/additional_condition.js').CS_codes_prefix;
-var EE_codes = require('./static/additional_condition.js').EE_codes;
+var CS_codes_prefix = require('./static/additional_condition.js').CS_course_codes_prefix;
+var EE_codes = require('./static/additional_condition.js').EE_course_codes;
 var graduate_codes_prefix = require('./static/additional_condition.js').graduate_codes_prefix;
 
 function determineValidDestination(req, res, next){

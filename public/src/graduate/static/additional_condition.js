@@ -6,7 +6,7 @@ module.exports.CS_course_code_prefix = [
 	'IDS'
 ];
 
-module.exports.EE_codes = [
+module.exports.EE_course_codes = [
 	'UEE2101',
 	'DEE2548',
 	'DEE2542',
