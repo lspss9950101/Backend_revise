@@ -16,7 +16,7 @@ class CourseRule{
 			score:		'',
 			cos_code:	'',
 			cos_credit:	0,
-			cos_type:	this.type,
+			cos_type:	this.type || '',
 			pass_fail:	'',
 			score_level:	'',
 			cos_typeext:	'',
