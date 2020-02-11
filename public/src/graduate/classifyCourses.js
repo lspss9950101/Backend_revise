@@ -238,6 +238,7 @@ function handlePCB(req){
 		extra_credit_course = Object.assign(new Course(), PCB1.courses[0]);
 		//extra_credit_course = PCB1.courses[0].copy();
 		//extra_credit_course.code += '_one';
+		extra_credit_course.code += '_one';
 		extra_credit_course.real_credit = 1;
 		extra_credit_course.moved = true;
 		req.csca.classes.pro_elective.courses.push(extra_credit_course);
@@ -246,6 +247,7 @@ function handlePCB(req){
 		extra_credit_course = Object.assign(new Course(), PCB2.courses[0]);
 		//extra_credit_course = PCB2.courses[0].copy();
 		//extra_credit_course.code += '_one';
+		extra_credit_course.code += '_one';
 		extra_credit_course.real_credit = 1;
 		extra_credit_course.moved = true;
 		req.csca.classes.pro_elective.courses.push(extra_credit_course);
