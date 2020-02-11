@@ -371,7 +371,7 @@ function splitSamelyCodedCourse(req){
 		if(!course)return;
 		
 		let passed_time_id = Object.keys(course.pass_fail).find((time_id) => (course.pass_fail[time_id]));
-		while(passed_time_id != -1){
+		while(Object.keys(course.pass_fail).filter((time_id) => (course.pass_fail[time_id])).length > 1){
 			let split_course = Object.assign(new Course(), course);
 
 			split_course.pass_fail = {};
