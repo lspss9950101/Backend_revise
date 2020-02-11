@@ -38,7 +38,7 @@ async function fetchDataInParallel(req){
 }
 
 function fetchTakenCourses(req, resolve, reject){
-	query.ShowUserAllScore(req.csca.student_id, (result, err) => {
+	query.ShowUserAllScore(req.csca.student_id, (err, result) => {
 		if(err)reject(err);
 		let courses = JSON.parse(result);
 		courses.forEach((course) => {
@@ -49,7 +49,7 @@ function fetchTakenCourses(req, resolve, reject){
 }
 
 function fetchOnCourses(req, resolve, reject){
-	query.ShowUserOnCos(req.csca.student_id, (result, err) => {
+	query.ShowUserOnCos(req.csca.student_id, (err, result) => {
 		if(err)reject(err);
 		let courses = JSON.parse(result);
 		courses.forEach((course) => {
@@ -60,7 +60,7 @@ function fetchOnCourses(req, resolve, reject){
 }
 
 function fetchOffsetCourses(req, resolve, reject){
-	query.ShowUserOffset(req.csca.student_id, (result, err) => {
+	query.ShowUserOffset(req.csca.student_id, (err, result) => {
 		if(err)reject(err);
 		let offsets = JSON.parse(result);
 		req.csca.data.offset_courses = offsets;
@@ -69,7 +69,7 @@ function fetchOffsetCourses(req, resolve, reject){
 }
 
 function fetchMovedRecords(req, resolve, reject){
-	query.ShowCosMotionLocate(req.csca.student_id, (result, err) => {
+	query.ShowCosMotionLocate(req.csca.student_id, (err, result) => {
 		if(err)reject(err);
 		let records = JSON.parse(result);
 		req.csca.data.moved_records = records;
@@ -78,7 +78,7 @@ function fetchMovedRecords(req, resolve, reject){
 }
 
 function fetchCompulsoryRules(req, resolve, reject){
-	query.ShowCosGroup(req.csca.student_id, (result, err) => {
+	query.ShowCosGroup(req.csca.student_id, (err, result) => {
 		if(err)reject(err);
 		let rules = JSON.parse(result);
 		req.csca.data.compulsory_rules = rules;
@@ -120,7 +120,7 @@ function fetchLanguageRules(req, resolve, reject){
 }
 
 function fetchRequiredCreditNum(req, resolve, reject){
-	query.ShowGraduateRule(req.csca.student_id, (result, err) => {
+	query.ShowGraduateRule(req.csca.student_id, (err, result) => {
 		if(err)reject(err);
 		let credit_nums = JSON.parse(result)[0];
 		req.csca.data.required_credit = {
@@ -134,7 +134,7 @@ function fetchRequiredCreditNum(req, resolve, reject){
 }
 
 function fetchUserInfo(req, resolve, reject){
-	query.ShowUserInfo(req.csca.student_id, (result, err) => {
+	query.ShowUserInfo(req.csca.student_id, (err, result) => {
 		if(err)reject(err);
 		let info = JSON.parse(result)[0];
 		req.csca.data.user_info = info;
