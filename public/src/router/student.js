@@ -17,7 +17,7 @@ function echo(req, res, next){
 	next();
 }
 
-router.post('/student/graduate/detail', 
+router.post('/students/graduate/detail', 
 	csrfProtection,
 	initContainers,
 	getStudentId,
