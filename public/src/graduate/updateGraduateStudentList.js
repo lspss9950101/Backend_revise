@@ -1,7 +1,48 @@
 var query = require('./../../../../../db/msql');
 
 function updateStudentList(req, res, next) {
-	var courseResult = req.csca.summary;
+	let new_result = req.csca.summary;
+	var courseResult = [
+		{title: '共同必修', 			credit: new_result.compulsory.acquire, 	require: new_result.compulsory.require, 	course: new_result.compulsory.course},
+		{title: '專業選修', 			credit: new_result.professional.acquire,require: new_result.professional.require, 	course: new_result.professional.require},
+		{title: '其他選修', 			credit: new_result.other.acquire, 	require: new_result.other.acquire, 		course: new_result.other.course},
+		{title: '外語', 			credit: new_result.language.acquire, 	require: new_result.language.require, 		course: new_result.language.course},
+		{title: '通識(舊制)', 			credit: new_result.general.acquire, 	require: new_result.general.require, 		course: new_result.general.course},
+		{title: '通識(新制)', 			credit: new_result.general_new.acquire, require: new_result.general_new.require, 	course: new_result.general_new.course},
+		{title: '體育', 			credit: new_result.pe.acquire, 		require: new_result.pe.require, 		course: new_result.pe.course},
+		{title: '服務學習', 			credit: new_result.service.acquire, 	require: new_result.service.require, 		course: new_result.service.course},
+		{title: '藝文賞析', 			credit: new_result.art.acquire, 	require: new_result.art.require, 		course: new_result.art.course},
+		{title: '其他不計入畢業學分', 		credit: new_result.exclusion.acquire, 	require: new_result.exclusion.require, 		course: new_result.exclusion.course},
+		{title: '抵免研究所課程', 		credit: new_result.graduate.acquire, 	require: new_result.graduate.require, 		course: new_result.graduate.course},
+		{title: '雙主修、輔系、學分學程', 	credit: new_result.dmajor_minor_program.acquire, require: new_result.dmajor_minor_program.require, course: new_result.dmajor_minor_program.course},
+		{
+			total:			new_result.total.acquire,
+			total_require:		new_result.total.require,
+			compulsory:		new_result.compulsory.acquire,
+			compulsory_require:	new_result.compulsory.require,
+			pro:			new_result.professional.acquire,
+			pro_require:		new_result.professional.require,
+			english:		new_result.english.acquire,
+			english_require:	new_result.english.require,
+			other:			new_result.other.acquire,
+			other_require:		new_result.other.require,
+			general:		new_result.general.acquire,
+			general_require:	new_result.general.require,
+			general_new:		new_result.general_new,acquire,
+			general_new_require:	new_result.general_new.require,
+			pe:			new_result.pe.acquire,
+			pe_require:		new_result.pe.require,
+			language:		new_result.language.acquire,
+			language_require:	new_result.language.require,
+			service:		new_result.service.acquire,
+			service_require:	new_result.service.require,
+			art:			new_result.art.acquire,
+			art_require:		new_result.art.require,
+			exclusion:		new_result.exclusion.acquire,
+			graduate:		new_result.graduate.acquire,
+			dmajor_minor_program:	new_result.dmajor_minor_program.acquire
+		}
+	];
 	var studentId = req.csca.student_id;
 	var info = req.csca.data.user_info;
 	var list = {
