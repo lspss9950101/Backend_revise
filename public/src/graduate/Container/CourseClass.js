@@ -10,7 +10,7 @@ class CourseClass{
 	}
 
 	calculateCredit(){
-		if(this.title = 'general_new'){
+		if(this.title == 'general_new'){
 			this.credit = {
 				total:	0,
 				core:	0,
