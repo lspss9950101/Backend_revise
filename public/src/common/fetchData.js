@@ -1,4 +1,4 @@
-var query('./../../../../../db/msql');
+var query = require('./../../../../../db/msql');
 
 function fetchData(req, res, next){
 	req.csca.raw_data = {};
