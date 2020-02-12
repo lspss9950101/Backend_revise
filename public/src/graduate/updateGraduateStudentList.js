@@ -465,7 +465,7 @@ function updateStudentList(req, res, next) {
 			if (req.studentListUpdate)
 				next();
 			else
-				return;
+				res.redirect('/');
 		}
 	});
 
