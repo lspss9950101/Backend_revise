@@ -46,17 +46,17 @@ function parseCompulsoryRules(req){
 	req.csca.rules.compulsory.codes = [];
 	if(req.body.professional_field == 0){
 		req.csca.rules.compulsory.course_rules = req.csca.raw_data.cos_group.filter((rule) => (rule.type == '網路' || rule.type == '必修')).map((rule) => {
-			req.csca.rules.compulsory.codes.push(...rule.codes);
+			req.csca.rules.compulsory.codes.push(...rule.cos_codes);
 			return new CourseRule(rule);
 		});
 	}else if(req.body.professional_field == 0){
 		req.csca.rules.compulsory.course_rules = req.csca.raw_data.cos_group.filter((rule) => (rule.type == '多媒體' || rule.type == '必修')).map((rule) => {
-			req.csca.rules.compulsory.codes.push(...rule.codes);
+			req.csca.rules.compulsory.codes.push(...rule.cos_codes);
 			return new CourseRule(rule);
 		});
 	}else{
 		req.csca.rules.compulsory.course_rules = req.csca.raw_data.cos_group.filter((rule) => (rule.type == '必修')).map((rule) => {
-			req.csca.rules.compulsory.codes.push(...rule.codes);
+			req.csca.rules.compulsory.codes.push(...rule.cos_codes);
 			return new CourseRule(rule);
 		});
 	}
