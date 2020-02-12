@@ -93,7 +93,7 @@ function parseLanguageRules(req){
 function parseRequiredCreditNum(req){
 	if(!req.csca.raw_data.graduate_rule)return;
 	if(!req.csca.data)req.csca.data = {};
-	req.csca.data.rquired_credit = {
+	req.csca.data.required_credit = {
 		compulsory:	req.csca.raw_data.graduate_rule[0].require_credit,
 		pro_elective:	req.csca.raw_data.graduate_rule[0].pro_credit,
 		elective:	req.csca.raw_data.graduate_rule[0].free_credit,
