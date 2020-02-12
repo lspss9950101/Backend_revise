@@ -2,6 +2,8 @@ var Course = require('./Container/Course.js');
 var CourseRule = require('./Container/CourseRule.js');
 
 function parseData(req, res, next){
+	req.csca.data = {};
+
 	parseTakenCourses(req);
 	parseOnCourse(req);
 	parseOffsetCourse(req);
@@ -31,6 +33,11 @@ function parseOnCourse(req){
 function parseOffsetCourse(req){
 	if(!req.csca.raw_data.user_offset)return;
 	req.csca.data.offset_courses = req.csca.raw_data.user_offset;
+}
+
+function parseMovedRecords(req){
+	if(!req.csca.raw_data.cos_motion_locate)return;
+	req.csca.data.moved_recoreds = req.csca.raw_data.cos_motion_locate;
 }
 
 function parseCompulsoryRules(req){
