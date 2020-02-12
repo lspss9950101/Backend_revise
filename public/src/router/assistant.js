@@ -13,7 +13,6 @@ var classifyCourses = require('./../graduate/classifyCourses.js');
 var handleExceptions = require('./../graduate/handleExceptions.js');
 var followRemainingRules = require('./../graduate/followRemainingRules.js');
 var generateSummary = require('./../graduate/generateSummary.js');
-var determineValidDestination = require('./../graduate/determineValidDestination.js');
 var getGraduateCheck = require('./../graduate/getGraduateCheck.js');
 
 function echo(req, res, next){
@@ -21,7 +20,7 @@ function echo(req, res, next){
 	next();
 }
 
-router.post('/students/graduate/detail', 
+router.post('/assistants/graduate/detail', 
 	csrfProtection,
 	syncProfessionalField,
 	getStudentId,
@@ -50,30 +49,7 @@ router.post('/students/graduate/detail',
 	}
 );
 
-router.post('/students/graduate/legalMoveTarget',
-	csrfProtection,
-	getStudentId,
-	(req, res, next) => {
-		req.csca.query_list = [
-			{func_name: 'ShowUserAllScore', 	container_name: 'user_all_score'},
-			{func_name: 'ShowUserOnCos',		container_name:	'user_on_cos'},
-
-			{func_name: 'ShowCosGroup',		container_name: 'cos_group'},
-			{func_name: 'ShowGraduateRule',		container_name: 'graduate_rule'}
-		];
-		next();
-	},
-	fetchData,
-	parseData,
-	initContainers,
-	mergeDuplicates,
-	determineValidDestination,
-	(req, res) => {
-		res.json(req.csca.legal_target);
-	}
-);
-
-router.get('/students/graduate/check',
+router.get('/assistants/graduate/check',
 	getStudentId,
 	(req, res, next) => {
 		req.csca.query_list = [
