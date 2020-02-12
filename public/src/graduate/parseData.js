@@ -104,13 +104,13 @@ function parseRequiredCreditNum(req){
 function parseUserInfo(req){
 	if(!req.csca.raw_data.user_info)return;
 	if(!req.csca.data)req.csca.data = {};
-	req.csca.data.user_info = req.csca.raw_data.user_info;
+	[req.csca.data.user_info] = req.csca.raw_data.user_info;
 }
 
 function parseStudentGraduate(req){
 	if(!req.csca.raw_data.student_graduate)return;
 	if(!req.csca.data)req.csca.data = {};
-	req.csca.data.graduate_status = req.csca.raw_data.student_graduate;
+	[req.csca.data.graduate_status] = req.csca.raw_data.student_graduate;
 }
 
 module.exports = parseData;

@@ -14,6 +14,7 @@ var handleExceptions = require('./../graduate/handleExceptions.js');
 var followRemainingRules = require('./../graduate/followRemainingRules.js');
 var generateSummary = require('./../graduate/generateSummary.js');
 var getGraduateCheck = require('./../graduate/getGraduateCheck.js');
+var updateGraduateStudentList = require('./../graduate/updateGraduateStudentList.js');
 
 function echo(req, res, next){
 	console.log(require('util').inspect(req.csca, false, null, true));
@@ -63,6 +64,34 @@ router.get('/assistants/graduate/check',
 	getGraduateCheck,
 	(req, res) => {
 		res.json(req.csca.check_state);
+	}
+);
+
+router.get('/assistants/graduate/studentListUpdate',
+	getStudentId,
+	(req, res, next) => {
+		req.csca.query_list = [
+			{func_name: 'ShowUserAllScore', 	container_name: 'user_all_score'},
+			{func_name: 'ShowUserOnCos',		container_name:	'user_on_cos'},
+			{func_name: 'ShowUserOffset',		container_name:	'user_offset'},
+			{func_name: 'ShowCosMotionLocate',	container_name:	'cos_motion_locate'},
+			{func_name: 'ShowCosGroup',		container_name: 'cos_group'},
+			{func_name: 'ShowGraduateRule',		container_name: 'graduate_rule'},
+			{func_name: 'ShowUserInfo',		container_name: 'user_info'}
+		];
+		next();
+	},
+	fetchData,
+	parseData,
+	initContainers,
+	mergeDuplicates, 
+	classifyCourses, 
+	handleExceptions, 
+	followRemainingRules,
+	generateSummary, 
+	updateGraduateStudentList,
+	(req, res) => {
+		res.json(req.csca.student_list);
 	}
 );
 
