@@ -28,7 +28,7 @@ function updateStudentList(req, res, next) {
 			other_require:		new_result.other.require,
 			general:		new_result.general.acquire,
 			general_require:	new_result.general.require,
-			general_new:		new_result.general_new,acquire,
+			general_new:		new_result.general_new.acquire,
 			general_new_require:	new_result.general_new.require,
 			pe:			new_result.pe.acquire,
 			pe_require:		new_result.pe.require,
