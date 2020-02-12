@@ -18,7 +18,7 @@ async function fetchDataInParallel(req){
 			let special_syntax_list = [
 				'ShowStudentGraduate'
 			];
-			let syntax = special_syntax_list.some((func_name) => (func_name == query_target.func_name))) ? {student_id: req.csca.student_id} : req.csca.student_id;
+			let syntax = special_syntax_list.some((func_name) => (func_name == query_target.func_name)) ? {student_id: req.csca.student_id} : req.csca.student_id;
 			query[query_target.func_name](syntax, (err, result) => {
 				if(err || result == null)reject({err: err, result: result});
 				req.csca.raw_data[query_target.container_name] = JSON.parse(result);
