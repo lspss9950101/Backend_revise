@@ -22,10 +22,23 @@ function echo(req, res, next){
 router.post('/assistants/graduate/detail', 
 	csrfProtection,
 	syncProfessionalField,
-	initContainers,
 	getStudentId,
+	(req, res, next) => {
+		req.csca.query_list = [
+			{func_name: 'ShowUserAllScore', 	container_name: 'user_all_score'},
+			{func_name: 'ShowUserOnCos',		container_name:	'user_on_cos'},
+			{func_name: 'ShowUserOffset',		container_name:	'user_offset'},
+			{func_name: 'ShowCosMotionLocate',	container_name:	'cos_motion_locate'},
+			{func_name: 'ShowCosGroup',		container_name: 'cos_group'},
+			{func_name: 'ShowGraduateRule',		container_name: 'graduate_rule'},
+			{func_name: 'ShowUserInfo',		container_name: 'user_info'}
+		];
+		next();
+	},
 	fetchData,
-	mergeDuplicate, 
+	parseData,
+	initContainers,
+	mergeDuplicates, 
 	classifyCourses, 
 	handleExceptions, 
 	followRemainingRules,
@@ -37,6 +50,15 @@ router.post('/assistants/graduate/detail',
 
 router.get('/assistants/graduate/check',
 	getStudentId,
+	(req, res, next) => {
+		req.csca.query_list = [
+			{func_name: 'ShowCosGroup',		container_name: 'cos_group'},
+			{func_name: 'ShowStudentGraduate',	container_name: 'student_graduate'}
+		];
+		next();
+	},
+	fetchData,
+	parseData,
 	getGraduateCheck,
 	(req, res) => {
 		res.json(req.csca.check_state);
