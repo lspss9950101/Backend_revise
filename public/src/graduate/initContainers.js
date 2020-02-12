@@ -4,18 +4,18 @@ function initContainers(req, res, next){
 	req.csca.courses = {};
 
 	req.csca.classes = {
-		compulsory:	new CourseClass('共同必修'),
-		pro_elective:	new CourseClass('專業選修'),
-		elective:	new CourseClass('其他選修'),
-		language:	new CourseClass('外語'),
-		general_old:	new CourseClass('通識(舊制)'),
-		general_new:	new CourseClass('通識(新制)'),
-		PE:		new CourseClass('體育'),
-		service:	new CourseClass('服務學習'),
-		art:		new CourseClass('藝文賞析'),
-		uncount:	new CourseClass('其他不計入畢業學分'),
-		graduate:	new CourseClass('抵免研究所課程'),
-		addition:	new CourseClass('雙主修、輔系、學分學程')
+		compulsory:	new CourseClass('compulsory'),
+		pro_elective:	new CourseClass('professional'),
+		elective:	new CourseClass('other'),
+		language:	new CourseClass('language'),
+		general_old:	new CourseClass('general'),
+		general_new:	new CourseClass('general_new'),
+		PE:		new CourseClass('pe'),
+		service:	new CourseClass('service'),
+		art:		new CourseClass('art'),
+		uncount:	new CourseClass('exclusion'),
+		graduate:	new CourseClass('graduate'),
+		addition:	new CourseClass('dmajor_minor_program')
 	};
 
 	if(req.csca.data.required_credit)completeClassDetails(req);

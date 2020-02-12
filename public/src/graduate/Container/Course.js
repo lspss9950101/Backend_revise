@@ -3,7 +3,7 @@ class Course{
 		if(!raw_course)return;
 		this.code = raw_course.cos_code;
 		this.cname = raw_course.cos_cname;
-		this.ename = raw_course.cos_ename;
+		this.ename = raw_course.cos_ename || '';
 		this.type = raw_course.cos_type;
 
 		this.typeext = (raw_course.cos_typeext || '');

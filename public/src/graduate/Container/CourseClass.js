@@ -6,10 +6,11 @@ class CourseClass{
 		this.credit = 0;
 		this.english_credit = 0;
 		this.courses = [];
+		this.english_courses = [];
 	}
 
 	calculateCredit(){
-		if(this.title == '通識(新制)'){
+		if(this.title = 'general_new'){
 			this.credit = {
 				total:	0,
 				core:	0,
@@ -32,18 +33,21 @@ class CourseClass{
 						break;
 				}
 			});
-		}else if(this.title == '體育' || this.title == '服務學習' || this.title == '藝文賞析'){
+		}else if(this.title == 'pe' || this.title == 'service' || this.title == 'art'){
 			this.credit = 0;
 			this.english_credit = 0;
 			this.credit = this.courses.filter((course) => (course.has_passed)).length;
 		}else{
 			this.credit = 0;
 			this.english_credit = 0;
+			this.english_courses = [];
 			this.courses.forEach((course) => {
 				if(!course.has_passed)return;
 				this.credit += course.real_credit;
-				if(course.typeext == '英文授課' && !english_credit_blacklist.some((cname) => (course.cname == cname)) && course.code.startsWith('DCP'))
+				if(course.typeext == '英文授課' && !english_credit_blacklist.some((cname) => (course.cname == cname)) && course.code.startsWith('DCP')){
 					this.english_credit += course.real_credit;
+					this.english_courses.push(course);
+				}
 			});
 		}
 	}
@@ -52,8 +56,7 @@ class CourseClass{
 		let formatted_courses = this.courses.map((course) => (course.format()));
 
 		let result = {
-			title:		this.title,
-			credit:		this.credit,
+			acquire:	this.credit,
 			require:	this.require,
 			course: 	formatted_courses,
 		};
