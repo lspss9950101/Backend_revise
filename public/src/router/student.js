@@ -66,7 +66,7 @@ router.post('/students/graduate/legalMoveTarget',
 	fetchData,
 	parseData,
 	initContainers,
-	mergeDuplicate,
+	mergeDuplicates,
 	determineValidDestination,
 	(req, res) => {
 		res.json(req.csca.legal_target);
