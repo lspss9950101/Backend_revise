@@ -45,6 +45,7 @@ function parseMovedRecords(req){
 function parseCompulsoryRules(req){
 	if(!req.csca.raw_data.cos_group)return;
 	req.csca.rules = req.csca.rules | {};
+	req.csca.rules.compulsory = {};
 	req.csca.rules.compulsory.codes = [];
 	if(req.body.professional_field == 0){
 		req.csca.rules.compulsory.course_rules = req.csca.raw_data.cos_group.filter((rule) => (rule.type == '網路' || rule.type == '必修')).map((rule) => {
