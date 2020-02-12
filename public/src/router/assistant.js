@@ -5,9 +5,10 @@ var csrfProtection = require('csurf')();
 var getStudentId = require('../../../../user/common/handler/getStudentId').getStudentId.studentId;
 
 var syncProfessionalField = require('./../graduate/syncProfessionalField.js');
+var fetchData = require('./../common/fetchData.js');
 var initContainers = require('./../graduate/initContainers.js');
-var fetchData = require('./../graduate/fetchData.js');
-var mergeDuplicate = require('./../graduate/mergeDuplicates.js');
+var parseData = require('./../graduate/parseData.js');
+var mergeDuplicates = require('./../graduate/mergeDuplicates.js');
 var classifyCourses = require('./../graduate/classifyCourses.js');
 var handleExceptions = require('./../graduate/handleExceptions.js');
 var followRemainingRules = require('./../graduate/followRemainingRules.js');
