@@ -19,7 +19,7 @@ function echo(req, res, next){
 	next();
 }
 
-router.post('/students/graduate/detail', 
+router.post('/assistants/graduate/detail', 
 	csrfProtection,
 	syncProfessionalField,
 	initContainers,
@@ -35,7 +35,7 @@ router.post('/students/graduate/detail',
 	}
 );
 
-router.get('/students/graduate/check',
+router.get('/assistants/graduate/check',
 	getStudentId,
 	getGraduateCheck,
 	(req, res) => {
