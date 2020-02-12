@@ -309,18 +309,10 @@ function handleLanguage(req){
 			break;
 		}
 		case '2': case '3': case '4':{
-			if(req.csca.classes.language.courses.length > 4){
-				while(req.csca.classes.language.courses.length > 4){
-					req.csca.classes.elective.courses.push(req.csca.classes.language.courses[0]);
-					req.csca.classes.language.courses.splice(0, 1);
-				}
-				break;
-			}else{
-				let empty_advanced = req.csca.rules.language.advanced.createEmptyCourse();
-				while(req.csca.classes.language.courses.length < 4)
-					req.csca.classes.language.courses.push(empty_advanced);
-				break;
-			}
+			let empty_advanced = req.csca.rules.language.advanced.createEmptyCourse();
+			while(req.csca.classes.language.courses.length < 4)
+				req.csca.classes.language.courses.push(empty_advanced);
+			break;
 		}
 		default:{
 			let freshman_one = null;
@@ -359,7 +351,8 @@ function splitSamelyCodedCourse(req){
 	let course_list = [
 		{'class': 'compulsory', 'cname': '導師時間', 'specified': false},
 		{'class': 'PE', 'cname': '體育', 'specified': false},
-		{'class': 'art', 'cname': '藝文賞析教育', 'specified': true}
+		{'class': 'art', 'cname': '藝文賞析教育', 'specified': true},
+		{'class': 'language', 'cname': '英文', 'specified': false}
 	];
 
 	course_list.forEach((course_detail) => {
