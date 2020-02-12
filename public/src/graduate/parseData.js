@@ -10,10 +10,7 @@ function parseData(req, res, next){
 	parseLanguageRules(req);
 	parseRequiredCreditNum(req);
 	parseUserInfo(req);
-	parseClassDetails(req);
 	parseStudentGraduate(req);
-
-	completeClassDetails(req);
 
 	next();
 }
