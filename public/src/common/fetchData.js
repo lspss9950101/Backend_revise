@@ -4,7 +4,7 @@ function fetchData(req, res, next){
 	req.csca.raw_data = {};
 	fetchDataInParallel(req)
 	.then(() => (next()))
-	.cathc((err) => {
+	.catch((err) => {
 		console.error(err);
 		res.redirect('/');
 	});
