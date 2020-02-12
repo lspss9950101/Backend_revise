@@ -2,8 +2,6 @@ var Course = require('./Container/Course.js');
 var CourseRule = require('./Container/CourseRule.js');
 
 function parseData(req, res, next){
-	req.csca.data = {};
-
 	parseTakenCourses(req);
 	parseOnCourse(req);
 	parseOffsetCourse(req);
@@ -22,26 +20,31 @@ function parseData(req, res, next){
 
 function parseTakenCourses(req){
 	if(!req.csca.raw_data.user_all_score)return;
+	req.csca.data = req.csca.data | {};
 	req.csca.data.taken_courses = req.csca.raw_data.user_all_score.map((course) => (new Course(course)));
 }
 
 function parseOnCourse(req){
 	if(!req.csca.raw_data.user_on_cos)return;
+	req.csca.data = req.csca.data | {};
 	req.csca.data.on_courses = req.csca.raw_data.user_on_cos.map((course) => (new Course(course)));
 }
 
 function parseOffsetCourse(req){
 	if(!req.csca.raw_data.user_offset)return;
+	req.csca.data = req.csca.data | {};
 	req.csca.data.offset_courses = req.csca.raw_data.user_offset;
 }
 
 function parseMovedRecords(req){
 	if(!req.csca.raw_data.cos_motion_locate)return;
+	req.csca.data = req.csca.data | {};
 	req.csca.data.moved_recoreds = req.csca.raw_data.cos_motion_locate;
 }
 
 function parseCompulsoryRules(req){
 	if(!req.csca.raw_data.cos_group)return;
+	req.csca.rules = req.csca.rules | {};
 	req.csca.rules.compulsory.codes = [];
 	if(req.body.professional_field == 0){
 		req.csca.rules.compulsory.course_rules = req.csca.raw_data.cos_group.filter((rule) => (rule.type == '網路' || rule.type == '必修')).map((rule) => {
@@ -81,6 +84,7 @@ function parseLanguageRules(req){
 		cos_codes:	[]
 	};
 
+	req.csca.rules = req.csca.rules | {};
 	req.csca.rules.language = {
 		freshman_one:	new CourseRule(dummy_raw_data_freshman_one),
 		freshman_two:	new CourseRule(dummy_raw_data_freshman_two),
@@ -90,6 +94,7 @@ function parseLanguageRules(req){
 
 function parseRequiredCreditNum(req){
 	if(!req.csca.raw_data.graduate_rule)return;
+	req.csca.data = req.csca.data | {};
 	req.csca.data.rquired_credit = {
 		compulsory:	req.csca.raw_data.graduate_rule[0].require_credit,
 		pro_elective:	req.csca.raw_data.graduate_rule[0].pro_credit,
@@ -100,11 +105,13 @@ function parseRequiredCreditNum(req){
 
 function parseUserInfo(req){
 	if(!req.csca.raw_data.user_info)return;
+	req.csca.data = req.csca.data | {};
 	req.csca.data.user_info = req.csca.raw_data.user_info;
 }
 
 function parseStudentGraduate(req){
 	if(!req.csca.raw_data.student_graduate)return;
+	req.csca.data = req.csca.data | {};
 	req.csca.data.graduate_status = req.csca.raw_data.student_graduate;
 }
 
