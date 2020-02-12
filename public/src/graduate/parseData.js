@@ -36,7 +36,7 @@ function parseOffsetCourse(req){
 function parseMovedRecords(req){
 	if(!req.csca.raw_data.cos_motion_locate)return;
 	if(!req.csca.data)req.csca.data = {};
-	req.csca.data.moved_recoreds = req.csca.raw_data.cos_motion_locate;
+	req.csca.data.moved_records = req.csca.raw_data.cos_motion_locate;
 }
 
 function parseCompulsoryRules(req){
