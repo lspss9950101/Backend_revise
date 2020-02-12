@@ -1,3 +1,5 @@
+var query = require('./../../../../../db/msql');
+
 function updateStudentList(req, res, next) {
 	var courseResult = req.csca.summary;
 	var studentId = req.csca.student_id;
