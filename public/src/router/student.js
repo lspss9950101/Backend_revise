@@ -57,7 +57,7 @@ router.post('/students/graduate/legalMoveTarget',
 		req.csca.query_list = [
 			{func_name: 'ShowUserAllScore', 	container_name: 'user_all_score'},
 			{func_name: 'ShowUserOnCos',		container_name:	'user_on_cos'},
-
+			{func_name: 'ShowCosMotionLocate',	container_name:	'cos_motion_locate'},
 			{func_name: 'ShowCosGroup',		container_name: 'cos_group'},
 			{func_name: 'ShowGraduateRule',		container_name: 'graduate_rule'}
 		];

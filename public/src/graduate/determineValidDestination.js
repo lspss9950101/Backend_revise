@@ -74,6 +74,22 @@ function validateElective(req, course){
 
 	if(course.type == '軍訓' || course.code.startsWith('PYY') || course.cname == '藝文賞析教育' || course.code.startsWith('GEC') || course.code.startsWith('CGE') || course.code.startsWith('MIN') || course.cname.includes('服務學習'))
 		destination = [];
+
+	let is_from_language_or_general;
+	let record = req.csca.data.moved_records.find((record) => (record.cos_cname == course.cname));
+	if(record)is_from_language_or_general = (record.orig_pos == '外語' || record.orig_pos.startsWith('通識'));
+	else is_from_language_or_general = (course.type == '外語' || course.type == '通識');
+
+	if(is_from_language_or_general){
+		let moved_credits = req.csca.data.moved_records
+			.filter((record) => ((record.orig_pos == '外語' || record.orig_pos == '通識') && (record.now_pos == '其他選修')))
+			.reduce((acc, record) => {
+				let course = req.csca.courses.find((course) => (course.cname == record.cos_cname));
+				return acc + course.realCredit;
+			});
+		if(moved_credits + 8 + (req.csca.data.user_info.submit_type == '0' ? 20 : 22) >= 40)
+			destination = [];
+	}
 	
 	return destination;
 }
