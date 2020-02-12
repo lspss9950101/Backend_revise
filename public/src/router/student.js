@@ -77,7 +77,7 @@ router.get('/students/graduate/check',
 	getStudentId,
 	(req, res, next) => {
 		req.csca.query_list = [
-			{func_name: 'ShowCosGroup',		container_name: 'cos_group'},
+			{func_name: 'ShowUserInfo',		container_name: 'user_info'},
 			{func_name: 'ShowStudentGraduate',	container_name: 'student_graduate'}
 		];
 		next();
