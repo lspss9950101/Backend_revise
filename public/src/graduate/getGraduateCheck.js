@@ -11,7 +11,7 @@ function getGraduateCheck(req, res, next){
 			default_field = 0;
 	}
 	req.csca.check_state = {};
-	req.csca.check_state.status = (req.csca.data.user_info.graduate_submit == null) ? 0 : parseInt(req.csca.user_info.graduate_submit);
+	req.csca.check_state.status = (req.csca.data.user_info.graduate_submit == null) ? 0 : parseInt(req.csca.data.user_info.graduate_submit);
 	req.csca.check_state.general_course_type = (req.csca.data.user_info.submit_type == null) ? null : parseInt(req.csca.data.user_info.submit_type);
 	req.csca.check_state.professional_field = (req.csca.data.user_info.net_media == null) ? default_field : parseInt(req.csca.data.user_info.net_media);
 
