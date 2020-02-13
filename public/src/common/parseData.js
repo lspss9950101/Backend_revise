@@ -1,5 +1,5 @@
-var Course = require('./Container/Course.js');
-var CourseRule = require('./Container/CourseRule.js');
+var Course = require('./../graduate/Container/Course.js');
+var CourseRule = require('./../graduate/Container/CourseRule.js');
 
 function parseData(req, res, next){
 	parseDataInParallel(req)
