@@ -39,16 +39,15 @@ class CourseClass{
 			this.credit = this.courses.filter((course) => (course.has_passed)).length;
 		}else{
 			this.credit = 0;
-			this.english_credit = 0;
 			this.english_courses = [];
 			this.courses.forEach((course) => {
 				if(!course.has_passed)return;
 				this.credit += course.real_credit;
-				if(course.typeext == '英文授課' && !english_credit_blacklist.some((cname) => (course.cname == cname)) && course.code.startsWith('DCP')){
-					this.english_credit += course.real_credit;
+				if(course.typeext == '英文授課' && !english_credit_blacklist.some((cname) => (course.cname.includes(cname))) && course.code.startsWith('DCP')){
 					this.english_courses.push(course);
-				}
+				} 
 			});
+			this.english_credit = this.english_courses.length;
 		}
 	}
 
