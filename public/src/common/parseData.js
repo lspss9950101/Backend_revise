@@ -2,17 +2,31 @@ var Course = require('./Container/Course.js');
 var CourseRule = require('./Container/CourseRule.js');
 
 function parseData(req, res, next){
-	parseTakenCourses(req);
-	parseOnCourse(req);
-	parseOffsetCourse(req);
-	parseMovedRecords(req);
-	parseCompulsoryRules(req);
-	parseLanguageRules(req);
-	parseRequiredCreditNum(req);
-	parseUserInfo(req);
-	parseStudentGraduate(req);
+	parseDataInParallel(req)
+	.then(() => {
+		next();
+	});
+}
 
-	next();
+async function parseDataInParallel(req){
+	let funcs = [
+		parseTakenCourses(req);
+		parseOnCourse(req);
+		parseOffsetCourse(req);
+		parseMovedRecords(req);
+		parseCompulsoryRules(req);
+		parseLanguageRules(req);
+		parseRequiredCreditNum(req);
+		parseUserInfo(req);
+		parseStudentGraduate(req);
+	];
+
+	let promise_list = funcs.map((func) => (new Promise((resolve, reject) => {
+		func(req);
+		resolve();
+	})));
+
+	return await Promise.all(promise_list);
 }
 
 function parseTakenCourses(req){
@@ -82,6 +96,7 @@ function parseLanguageRules(req){
 		cos_codes:	[]
 	};
 
+	if(!req.csca.raw_data.cos_group)return;
 	if(!req.csca.rules)req.csca.rules = {};
 	req.csca.rules.language = {
 		freshman_one:	new CourseRule(dummy_raw_data_freshman_one),
