@@ -10,15 +10,15 @@ function parseData(req, res, next){
 
 async function parseDataInParallel(req){
 	let funcs = [
-		parseTakenCourses(req);
-		parseOnCourse(req);
-		parseOffsetCourse(req);
-		parseMovedRecords(req);
-		parseCompulsoryRules(req);
-		parseLanguageRules(req);
-		parseRequiredCreditNum(req);
-		parseUserInfo(req);
-		parseStudentGraduate(req);
+		parseTakenCourses(req),
+		parseOnCourse(req),
+		parseOffsetCourse(req),
+		parseMovedRecords(req),
+		parseCompulsoryRules(req),
+		parseLanguageRules(req),
+		parseRequiredCreditNum(req),
+		parseUserInfo(req),
+		parseStudentGraduate(req)
 	];
 
 	let promise_list = funcs.map((func) => (new Promise((resolve, reject) => {
