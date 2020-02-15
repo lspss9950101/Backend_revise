@@ -5,9 +5,8 @@ var csrfProtection = require('csurf')();
 var getStudentId = require('../../../../user/common/handler/getStudentId').getStudentId.studentId;
 
 var syncProfessionalField = require('./../graduate/syncProfessionalField.js');
-var fetchData = require('./../common/fetchData.js');
+var fetchAndParseData = require('./../common/fetchAndParseData.js');
 var initContainers = require('./../graduate/initContainers.js');
-var parseData = require('./../common/parseData.js');
 var mergeDuplicates = require('./../graduate/mergeDuplicates.js');
 var classifyCourses = require('./../graduate/classifyCourses.js');
 var handleExceptions = require('./../graduate/handleExceptions.js');
@@ -37,8 +36,7 @@ router.post('/students/graduate/detail',
 		];
 		next();
 	},
-	fetchData,
-	parseData,
+	fetchAndParseData,
 	initContainers,
 	mergeDuplicates, 
 	classifyCourses, 
@@ -62,8 +60,7 @@ router.post('/students/graduate/legalMoveTarget',
 		];
 		next();
 	},
-	fetchData,
-	parseData,
+	fetchAndParseData,
 	initContainers,
 	mergeDuplicates,
 	determineValidDestination,
@@ -81,8 +78,7 @@ router.get('/students/graduate/check',
 		];
 		next();
 	},
-	fetchData,
-	parseData,
+	fetchAndParseData,
 	getGraduateCheck,
 	(req, res) => {
 		res.json(req.csca.check_state);
