@@ -27,7 +27,7 @@ class Course{
 		if(year){
 			let time_id = year + '-' + semester;
 			this.scores.push({
-				year: parseInt(raw_course.cos_year),
+				year: parseInt(year),
 				score: (parseInt(raw_course.score) || -1),
 				grade: (raw_course.score_level || '0'),
 				semester: time_id
