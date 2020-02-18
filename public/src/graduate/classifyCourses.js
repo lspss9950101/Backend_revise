@@ -361,7 +361,7 @@ function splitSamelyCodedCourse(req){
 		course_class.courses.filter((course) => (course_detail.specified ? (course.cname == course_detail.cname) : (course.cname.includes(course_detail.cname)))).forEach((course) => {
 			while(Object.keys(course.pass_fail).filter((time_id) => (course.pass_fail[time_id])).length > 1){
 				let passed_time_id = Object.keys(course.pass_fail).find((time_id) => (course.pass_fail[time_id]));
-				course_class.courses.push(course.split());
+				course_class.courses.push(course.split(passed_time_id));
 			}
 		});
 	});
