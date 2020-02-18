@@ -27,9 +27,9 @@ class Course{
 		if(year){
 			let time_id = year + '-' + semester;
 			this.scores.push({
+				year: parseInt(raw_course.cos_year),
 				score: (parseInt(raw_course.score) || -1),
 				grade: (raw_course.score_level || '0'),
-				year: (raw_course.cos_year - 99 - parseInt(student_id.substr(0, 2))),
 				semester: time_id
 			});
 			this.pass_fail[time_id] = (raw_course.pass_fail == '通過');
@@ -69,11 +69,16 @@ class Course{
 		return result;
 	}
 */
-	format(){
+	format(student_id){
 		let result = {
 			cn:			this.cname,
 			en:			this.ename,
-			scores:			this.score,
+			scores:			this.scores.map((score) => ({
+				score: score.score,
+				grade: score.grade,
+				year: score.year - 99 - parseInt(student_id.substr(0, 2)),
+				semester: score.semester
+			})),
 			code:			this.code,
 			realCredit:		this.real_credit,
 			originalCredit:		this.original_credit,
