@@ -49,6 +49,8 @@ class Course{
 
 	split(time_id){
 		let split_course = Object.assign(new Course(), this);
+		split_course.scores = Object.assign({}, this.scores);
+
 		split_course.pass_fail = {};
 		split_course.pass_fail[time_id] = this.pass_fail[time_id];
 		split_course.has_passed = split_course.pass_fail[time_id];
