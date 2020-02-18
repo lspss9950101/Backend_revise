@@ -1,4 +1,5 @@
 var english_credit_blacklist = require('./../static/additional_condition.js').english_credit_blacklist;
+var CS_course_codes_prefix = require('./../static/additional_condition.js').CS_course_codes_prefix;
 
 class CourseClass{
 	constructor(title){
@@ -43,7 +44,7 @@ class CourseClass{
 			this.courses.forEach((course) => {
 				if(!course.has_passed)return;
 				this.credit += course.real_credit;
-				if(course.typeext == '英文授課' && !english_credit_blacklist.some((cname) => (course.cname.includes(cname))) && course.code.startsWith('DCP')){
+				if(course.typeext == '英文授課' && !english_credit_blacklist.some((cname) => (course.cname.includes(cname))) && CS_course_codes_prefix.some((prefix) => (course.code.startsWith(prefix)))){
 					this.english_courses.push(course);
 				} 
 			});
