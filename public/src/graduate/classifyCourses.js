@@ -359,25 +359,9 @@ function splitSamelyCodedCourse(req){
 		let course_class = req.csca.classes[course_detail['class']];
 		
 		course_class.courses.filter((course) => (course_detail.specified ? (course.cname == course_detail.cname) : (course.cname.includes(course_detail.cname)))).forEach((course) => {
-			let passed_time_id = Object.keys(course.pass_fail).find((time_id) => (course.pass_fail[time_id]));
 			while(Object.keys(course.pass_fail).filter((time_id) => (course.pass_fail[time_id])).length > 1){
-				let split_course = Object.assign(new Course(), course);
-	
-				split_course.pass_fail = {};
-				split_course.score = {};
-				split_course.score_level = {};
-				split_course.pass_fail[passed_time_id] = course.pass_fail[passed_time_id];
-				split_course.score[passed_time_id] = course.score[passed_time_id];
-				split_course.score_level[passed_time_id] = course.score_level[passed_time_id];
-
-				course_class.courses.push(split_course);
-
-				delete course.pass_fail[passed_time_id];
-				delete course.score[passed_time_id];
-				delete course.score_level[passed_time_id];
-				course.has_passed = Object.values(course.pass_fail).some((pass_fail) => (pass_fail));
-
-				passed_time_id = Object.keys(course.pass_fail).find((time_id) => (course.pass_fail[time_id]));
+				let passed_time_id = Object.keys(course.pass_fail).find((time_id) => (course.pass_fail[time_id]));
+				course_class.courses.push(course.split(passed_time_id));
 			}
 		});
 	});
