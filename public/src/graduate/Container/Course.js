@@ -84,7 +84,6 @@ class Course{
 			originalCredit:		this.original_credit,
 			type:			this.type,
 			complete:		this.has_passed,
-			grade:			this.score_level,
 			english:		(this.typeext.includes('英文授課')), 
 			reason:			this.reason,
 			move:			this.moved,

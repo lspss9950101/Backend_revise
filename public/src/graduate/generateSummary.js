@@ -14,7 +14,7 @@ function generateSummary(req, res, next){
 	];
 
 	Object.values(req.csca.classes).forEach((course_class) => {
-		req.csca.summary[course_class.title] = course_class.format();
+		req.csca.summary[course_class.title] = course_class.format(req.csca.student_id);
 	});
 
 	credit_classes.forEach((class_title) => {

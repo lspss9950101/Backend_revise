@@ -52,8 +52,8 @@ class CourseClass{
 		}
 	}
 
-	format(){
-		let formatted_courses = this.courses.map((course) => (course.format()));
+	format(student_id){
+		let formatted_courses = this.courses.map((course) => (course.format(student_id)));
 
 		let result = {
 			acquire:	this.credit,
