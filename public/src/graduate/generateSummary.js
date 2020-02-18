@@ -34,7 +34,7 @@ function generateSummary(req, res, next){
 	req.csca.summary.english = {
 		acquire: english_credit,
 		require: 1,
-		course: english_courses.map((course) => (course.format()))
+		course: english_courses.map((course) => (course.format(req.csca.student_id)))
 	};
 
 	next();
