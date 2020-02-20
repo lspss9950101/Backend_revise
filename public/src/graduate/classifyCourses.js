@@ -265,7 +265,7 @@ function handlePCB(req){
 		PCB2.ext.biology.splice(0, 1);
 	}else{
 		PCB1.courses = (PCB1.ext.physic[0] ? [PCB1.ext.physic[0]] : []);
-		PCB2.courses = (PCB2.ext.physic[0] ? [PCB1.ext.physic[0]] : []);
+		PCB2.courses = (PCB2.ext.physic[0] ? [PCB2.ext.physic[0]] : []);
 
 		if(PCB1.courses[0])PCB1.ext.physic.splice(0, 1);
 		if(PCB2.courses[0])PCB2.ext.physic.splice(0, 1);
