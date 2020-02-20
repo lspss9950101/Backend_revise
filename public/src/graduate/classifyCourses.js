@@ -291,7 +291,7 @@ function formatCompulsory(req){
 	req.csca.classes.compulsory.courses = [];
 	req.csca.rules.compulsory.course_rules.forEach((rule) => {
 		if(rule.courses.length == 0)
-			req.csca.classes.compulsory.courses.push(rule.createEmptyCourse());
+			req.csca.classes.compulsory.courses.push(rule.createEmptyCourse(req.csca.student_id));
 		else
 			req.csca.classes.compulsory.courses.push(...rule.courses);
 	});
@@ -351,19 +351,24 @@ function splitSamelyCodedCourse(req){
 	let course_list = [
 		{'class': 'compulsory', 'cname': '導師時間', 'specified': false},
 		{'class': 'PE', 'cname': '體育', 'specified': false},
-		{'class': 'art', 'cname': '藝文賞析教育', 'specified': true},
-		{'class': 'language', 'cname': '英文', 'specified': false}
+		{'class': 'art', 'cname': '藝文賞析教育', 'specified': true}
 	];
 
 	course_list.forEach((course_detail) => {
 		let course_class = req.csca.classes[course_detail['class']];
-		
-		course_class.courses.filter((course) => (course_detail.specified ? (course.cname == course_detail.cname) : (course.cname.includes(course_detail.cname)))).forEach((course) => {
-			while(Object.keys(course.pass_fail).filter((time_id) => (course.pass_fail[time_id])).length > 1){
-				let passed_time_id = Object.keys(course.pass_fail).find((time_id) => (course.pass_fail[time_id]));
-				course_class.courses.push(course.split(passed_time_id));
+		let result_courses = []; 
+
+		course_class.courses.forEach((course) => {
+			result_courses.push(course);
+			if(course_detail.specified ? (course.cname == course_detail.cname) : (course.cname.includes(course_detail.cname))){
+				while(Object.keys(course.pass_fail).filter((time_id) => (course.pass_fail[time_id])).length > 1){
+					let passed_time_id = Object.keys(course.pass_fail).find((time_id) => (course.pass_fail[time_id]));
+					result_courses.push(course.split(passed_time_id));
+				}
 			}
 		});
+
+		course_class.courses = result_courses;
 	});
 }
 
