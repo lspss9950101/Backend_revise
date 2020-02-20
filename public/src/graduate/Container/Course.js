@@ -10,7 +10,7 @@ class Course{
 		this.brief = raw_course.brief;
 		this.brief_new = raw_course.brief_new;
 		this.original_credit = parseFloat(raw_course.cos_credit);
-		this.real_credit = parseFloat(raw_course.cos_credit);
+		this.real_credit = raw_course.year ? 0 : parseFloat(raw_course.cos_credit);
 
 		this.moved = false;
 		if(raw_course.year)this.reason = 'now';

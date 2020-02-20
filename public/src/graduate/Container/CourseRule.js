@@ -9,7 +9,7 @@ class CourseRule{
 		this.courses = [];
 	}
 
-	createEmptyCourse(){
+	createEmptyCourse(student_id){
 		let dummy_raw_course = {
 			cos_cname:	this.cname,
 			cos_ename:	this.ename,
@@ -25,7 +25,7 @@ class CourseRule{
 			cos_dep:	''
 		};
 
-		return new Course(dummy_raw_course, true);
+		return new Course(dummy_raw_course, student_id, true);
 	}
 }
 
