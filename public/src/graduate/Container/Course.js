@@ -2,64 +2,56 @@ class Course{
 	constructor(raw_course, student_id, is_dummy){
 		if(!raw_course)return;
 		this.code = raw_course.cos_code;
-		this.cname = raw_course.cos_cname;
-		this.ename = raw_course.cos_ename || '';
 		this.type = raw_course.cos_type;
-
-		this.typeext = (raw_course.cos_typeext || '');
 		this.brief = raw_course.brief;
 		this.brief_new = raw_course.brief_new;
 		this.original_credit = parseFloat(raw_course.cos_credit);
-		this.real_credit = raw_course.year ? 0 : parseFloat(raw_course.cos_credit);
-
 		this.moved = false;
-		if(raw_course.year)this.reason = 'now';
-		else if(raw_course.offset_type == '抵免')this.reason = 'free1';
-		else if(raw_course.offset_type == '免修')this.reason = 'free2';
-		else this.reason = '';
-
 		this.has_passed = (raw_course.pass_fail == '通過');
-
-		let year = (raw_course.cos_year || raw_course.year);
-		let semester = raw_course.semester;
-		this.scores = [];
-		this.pass_fail = {};
-		if(year){
-			let time_id = year + '-' + semester;
-			this.scores.push({
-				year: parseInt(year),
-				score: (parseInt(raw_course.score) || -1),
-				grade: (raw_course.score_level || '0'),
-				semester: time_id
-			});
-			this.pass_fail[time_id] = (raw_course.pass_fail == '通過');
-		}
-
 		this.dimension = null;
 		this.department = raw_course.cos_dep;
 		this.is_dummy = (is_dummy == true);
+
+		this.data = {};
+
+		let year = (raw_course.cos_year || raw_course.year);
+		let semester = raw_course.semester;
+		let time_id = year + '-' + semester;
+
+		this.data[time_id] = {
+			cname:		raw_course.cos_cname,
+			ename:		raw_course.cos_ename || '',
+			typeext:	raw_course.cos_typeext || '',
+			real_credit:	raw_course.year ? 0 : this.original_credit,
+			pass_fail:	raw_course.pass_fail == '通過',
+			score:		{
+						year:		parseInt(year),
+						score:		parseInt(raw_course.score) || -1,
+						grade:		raw_course.score_level || '0',
+						semester:	time_id
+					},
+			english:	(raw_course.cos_typeext || '').includes('英文授課'),
+			reason:		''
+		}
+
+		if(raw_course.year)this.data[time_id].reason = 'now';
+		else if(raw_course.offset_type == '抵免')this.data[time_id].reason = 'free1';
+		else if(raw_course.offset_type == '免修')this.data[time_id].reason = 'free2';
 	}
 
 	append(course){
-		this.scores = [...this.scores, ...course.scores];
-		this.pass_fail = {...this.pass_fail, ...course.pass_fail};
-
+		this.data = {...this.data, ...course.data};
 		this.has_passed = this.has_passed || course.has_passed;
 	}
 
 	split(time_id){
 		let split_course = Object.assign(new Course(), this);
-		split_course.scores = Object.assign({}, this.scores);
+		split_course.data = {};
+		split_course.data[time_id] = this.data[time_id];
+		delete this.data[time_id];
 
-		split_course.pass_fail = {};
-		split_course.pass_fail[time_id] = this.pass_fail[time_id];
-		split_course.has_passed = split_course.pass_fail[time_id];
-		delete this.pass_fail[time_id];
-		this.has_passed = Object.values(this.pass_fail).some((pass_fail) => (pass_fail));
+		this.has_passed = Object.values(this.data).some((data) => (data.pass_fail));
 		
-		let score_idx = this.scores.findIndex((score) => (score.semester == time_id));
-		split_course.scores = [this.scores[score_idx]];
-		this.scores.splice(score_idx, 1);
 		return split_course;
 	}
 /*
@@ -71,23 +63,28 @@ class Course{
 		return result;
 	}
 */
+	getRepresentingData(){
+		return Object.values(this.data)[0];
+	}
+
 	format(student_id){
+		let representing_data = this.getRepresentingData();
 		let result = {
-			cn:			this.cname,
-			en:			this.ename,
-			scores:			this.scores.map((score) => ({
+			cn:			representing_data.cname,
+			en:			representing_data.ename,
+			scores:			Object.values(this.data).map((data) => (data.score)).map((score) => ({
 				score: score.score,
 				grade: score.grade,
 				year: score.year - 99 - parseInt(student_id.substr(0, 2)),
 				semester: score.semester
 			})),
 			code:			this.code,
-			realCredit:		this.real_credit,
+			realCredit:		representing_data.real_credit,
 			originalCredit:		this.original_credit,
 			type:			this.type,
 			complete:		this.has_passed,
-			english:		(this.typeext.includes('英文授課')), 
-			reason:			this.reason,
+			english:		representing_data.english, 
+			reason:			representing_data.reason,
 			move:			this.moved,
 			dimension:		this.dimension
 		};

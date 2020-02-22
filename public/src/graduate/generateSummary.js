@@ -24,7 +24,7 @@ function generateSummary(req, res, next){
 		english_courses.push(...req.csca.classes[class_title].english_courses);
 	});
 
-	if(req.csca.classes.elective.require == 11)total_require += 2;
+	if(req.csca.data.user_info.submit_type == '1')total_require += 2;
 
 	req.csca.summary.total = {
 		acquire: total_credit,

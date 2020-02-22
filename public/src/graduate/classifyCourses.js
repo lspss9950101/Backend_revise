@@ -215,7 +215,7 @@ function handleOffset(req){
 			pass_fail:	'通過'
 		};
 		let course = new Course(parsed_raw_course);
-		course.reason = 'free2';
+		course.getRepresentingData().reason = 'free2';
 		req.csca.classes.language.courses.push(course);
 	}
 }
@@ -283,7 +283,7 @@ function handlePCB(req){
 function handleMentorTime(req){
 	let course_rule = req.csca.rules.compulsory.course_rules.find((rule) => (rule.cname == '導師時間'));
 	course_rule.courses.forEach((course) => {
-		if(course.department != '資工系' && !course.is_dummy)course.reason = 'notCS';
+		if(course.department != '資工系' && !course.is_dummy)course.getRepresentingData().reason = 'notCS';
 	});
 }
 
@@ -299,7 +299,7 @@ function formatCompulsory(req){
 
 function handleService(req){
 	req.csca.classes.service.courses.filter((course) => (course.cname == '服務學習(一)')).forEach((course) => {
-		if(course.department != '資工系' && !course.is_dummy)course.reason = 'notCS';
+		if(course.department != '資工系' && !course.is_dummy)course.getRepresentingData().reason = 'notCS';
 	});
 }
 
@@ -336,7 +336,8 @@ function handleLanguage(req){
 			while(advanced.length < 2)advanced.push(empty_advanced);
 			for(let i = 0; i < 2; i++){
 				advanced[i].realCredit = 0;
-				if(advanced[i].reason == '')advanced[i].reason = 'english';
+				let representing_data = advanced[i].getRepresentingData();
+				if(representing_data.reason == '')representing_data.reason = 'english';
 			}
 			while(advanced.length + other_language.length < 4)advanced.push(empty_advanced);
 
