@@ -44,18 +44,20 @@ function classifyCoursesByDefault(req){
 
 function classifyCompulsory(course, req){
 	if(req.csca.rules.compulsory.codes.some((code) => (course.code == code))){
-		if(course.cname.startsWith('微分方程') || course.cname.startsWith('訊號與系統')){
+		let representing_data = course.getRepresentingData();
+		if(representing_data.cname.startsWith('微分方程') || representing_data.cname.startsWith('訊號與系統')){
 			return (course.department == '資工系' || course.department == '電資共同');
 		}else return true;
 	}else return false;
 }
 
 function classifyService(course){
-	return course.cname.includes('服務學習');
+	return course.getRepresentingData().cname.includes('服務學習');
 }
 
 function classifyProElective(course){
-	if(course.cname.startsWith('微分方程') || course.cname.startsWith('訊號與系統')){
+	let representing_data = course.getRepresentingData();
+	if(representing_data.cname.startsWith('微分方程') || representing_data.cname.startsWith('訊號與系統')){
 		return (course.department == '資工系' || course.department == '電資共同');
 	}else{
 		return CS_dept_code_prefix.some((prefix) => (course.code.startsWith(prefix)));
@@ -65,8 +67,9 @@ function classifyProElective(course){
 function classifyUncount(course){
 	if(course.type == '軍訓')return true;
 	if(course.type == '選修' && course.code.startsWith('MIN'))return true;
-	if(course.cname.includes('教學實務'))return true;
-	if(course.cname.includes('個別研究'))return true;
+	let representing_data = course.getRepresentingData();
+	if(representing_data.cname.includes('教學實務'))return true;
+	if(representing_data.cname.includes('個別研究'))return true;
 	return false;
 }
 
@@ -75,11 +78,11 @@ function classifyLanguage(course){
 }
 
 function classifyPE(course){
-	return course.cname.includes('體育');
+	return course.getRepresentingData().cname.includes('體育');
 }
 
 function classifyArt(course){
-	return course.cname == '藝文賞析教育';
+	return course.getRepresentingData().cname == '藝文賞析教育';
 }
 
 function classifyGeneral(course){
@@ -89,8 +92,8 @@ function classifyGeneral(course){
 function classifyElective(course){
 	if(course.code.startsWith('GEC') || course.code.startsWith('CGE'))return false;
 	if(course.code.startsWith('MIN'))return false;
-	if(course.cname.includes('教學實務'))return false;
-	if(course.cname.includes('個人研究'))return false;
+	if(course.getRepresentingData().cname.includes('教學實務'))return false;
+	if(course.getRepresentingData().cname.includes('個人研究'))return false;
 	return true;
 }
 
