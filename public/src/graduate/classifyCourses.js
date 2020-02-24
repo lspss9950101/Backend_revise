@@ -335,7 +335,7 @@ function handleLanguage(req){
 			let empty_advanced = req.csca.rules.language.advanced.createEmptyCourse();
 			while(advanced.length < 2)advanced.push(empty_advanced);
 			for(let i = 0; i < 2; i++){
-				advanced[i].realCredit = 0;
+				advanced[i].real_credit = 0;
 				if(advanced[i].reason == '')advanced[i].reason = 'english';
 			}
 			while(advanced.length + other_language.length < 4)advanced.push(empty_advanced);
