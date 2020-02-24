@@ -276,7 +276,7 @@ function updateStudentList(req, res, next) {
 
     for (var i = 0; i < compulse.course.length; i++) {
         if (compulse.course[i].complete) {
-            if (compulse.course[i].cn.substring(0, 4) === '導師時間') {
+            if (compulse.course[i].cn.includes('導師時間')) {
                 list.mentor -= 1;
             } else {
                 var cn = compulse.course[i].cn;
@@ -295,7 +295,7 @@ function updateStudentList(req, res, next) {
         } else {
             if (compulse.course[i].reason === 'now') {
                 list.current.push(compulse.course[i].cn);
-                if (compulse.course[i].cn.substring(0, 4) === '導師時間') {
+                if (compulse.course[i].cn.includes('導師時間')) {
                     will_list.mentor += 1;
                 } else {
                     var cn = compulse.course[i].cn;
