@@ -369,7 +369,7 @@ function splitSamelyCodedCourse(req){
 			result_courses.push(course);
 			if(course_detail.specified ? (representing_data.cname == course_detail.cname) : (representing_data.cname.includes(course_detail.cname))){
 				while(Object.keys(course.data).filter((time_id) => (course.data[time_id].pass_fail)).length > 1){
-					let passed_time_id = Object.keys(course.pass_fail).find((time_id) => (course.data[time_id].pass_fail));
+					let passed_time_id = Object.keys(course.data).find((time_id) => (course.data[time_id].pass_fail));
 					result_courses.push(course.split(passed_time_id));
 				}
 			}
