@@ -131,9 +131,10 @@ function handleCompulsory(req){
 			};
 
 			rule.courses.forEach((course) => {
-				if(course.cname.includes('物理'))rule.ext.physic.push(course);
-				else if(course.cname.includes('化學'))rule.ext.chemistry.push(course);
-				else if(course.cname.includes('生物'))rule.ext.biology.push(course);
+				let representing_data = course.getRepresentingData();
+				if(representing_data.cname.includes('物理'))rule.ext.physic.push(course);
+				else if(representing_data.cname.includes('化學'))rule.ext.chemistry.push(course);
+				else if(representing_data.cname.includes('生物'))rule.ext.biology.push(course);
 			});
 
 			let passed_idx, first_passed_course;
