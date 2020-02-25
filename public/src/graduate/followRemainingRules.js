@@ -15,14 +15,14 @@ function handleExcessiveProElective(req){
 
 	while(credit > required_credit){
 		if(credit - required_credit < 3){
-			let one_credit_course_idx = req.csca.classes.pro_elective.courses.findIndex((course) => (course.real_credit == 1));
+			let one_credit_course_idx = req.csca.classes.pro_elective.courses.findIndex((course) => (course.getRepresentingData().real_credit == 1));
 			if(one_credit_course_idx == -1)break;
 			let one_credit_course = req.csca.classes.pro_elective.courses[one_credit_course_idx];
 			req.csca.classes.pro_elective.courses.splice(one_credit_course_idx, 1);
 			credit -= 1;
 			req.csca.classes.elective.courses.push(one_credit_course);
 		}else{
-			let three_credit_course_idx = req.csca.classes.pro_elective.courses.findIndex((course) => (course.real_credit == 3));
+			let three_credit_course_idx = req.csca.classes.pro_elective.courses.findIndex((course) => (course.getRepresentingData().real_credit == 3));
 			let three_credit_course = req.csca.classes.pro_elective.courses[three_credit_course_idx];
 			req.csca.classes.pro_elective.courses.splice(three_credit_course_idx, 1);
 			credit -= 3;
@@ -76,10 +76,10 @@ function moveCourses(req){
 		if(move_data[class_title].length == 0)return;
 		move_data[class_title].forEach((record) => {
 			if(class_title == 'general_old' && move_data.destination == 'general_old'){
-				let course = req.csca.classes[class_title].courses.find((course) => (course.cname == record.target));
+				let course = req.csca.classes[class_title].courses.find((course) => (course.getRepresentingData().cname == record.target));
 				course.dimension = record.dimension;
 			}else{
-				let course_idx = req.csca.classes[class_title].courses.findIndex((course) => (course.cname == record.target));
+				let course_idx = req.csca.classes[class_title].courses.findIndex((course) => (course.getRepresentingData().cname == record.target));
 				if(course_idx == -1)return;
 				req.csca.classes[class_title].courses[course_idx].moved = true;
 				move_results[record.destination].push(req.csca.classes[class_title].courses[course_idx]);

@@ -243,7 +243,7 @@ function handlePCB(req){
 		//extra_credit_course = PCB1.courses[0].copy();
 		//extra_credit_course.code += '_one';
 		extra_credit_course.code += '_one';
-		extra_credit_course.real_credit = 1;
+		extra_credit_course.getRepresentingData().real_credit = 1;
 		extra_credit_course.moved = true;
 		req.csca.classes.pro_elective.courses.push(extra_credit_course);
 
@@ -252,7 +252,7 @@ function handlePCB(req){
 		//extra_credit_course = PCB2.courses[0].copy();
 		//extra_credit_course.code += '_one';
 		extra_credit_course.code += '_one';
-		extra_credit_course.real_credit = 1;
+		extra_credit_course.getRepresentingData().real_credit = 1;
 		extra_credit_course.moved = true;
 		req.csca.classes.pro_elective.courses.push(extra_credit_course);
 	}else if(PCB1.ext.chemistry.length && PCB2.ext.chemistry.length){
@@ -325,9 +325,10 @@ function handleLanguage(req){
 			let other_language = [];
 
 			req.csca.classes.language.courses.forEach((course) => {
-				if(course.cname == '大一英文（一）')freshman_one = course;
-				else if(course.cname == '大一英文（二）')freshman_two = course;
-				else if(course.cname.includes('英文'))advanced.push(course);
+				let representing_data = course.getRepresentingData();
+				if(representing_data.cname == '大一英文（一）')freshman_one = course;
+				else if(representing_data.cname == '大一英文（二）')freshman_two = course;
+				else if(representing_data.cname.includes('英文'))advanced.push(course);
 				else other_language.push(course);
 			});
 
@@ -339,8 +340,8 @@ function handleLanguage(req){
 			let empty_advanced = req.csca.rules.language.advanced.createEmptyCourse();
 			while(advanced.length < 2)advanced.push(empty_advanced);
 			for(let i = 0; i < 2; i++){
-				advanced[i].realCredit = 0;
 				let representing_data = advanced[i].getRepresentingData();
+				representing_data.real_credit = 0;
 				if(representing_data.reason == '')representing_data.reason = 'english';
 			}
 			while(advanced.length + other_language.length < 4)advanced.push(empty_advanced);
@@ -364,10 +365,11 @@ function splitSamelyCodedCourse(req){
 		let result_courses = []; 
 
 		course_class.courses.forEach((course) => {
+			let representing_data = course.getRepresentingData();
 			result_courses.push(course);
-			if(course_detail.specified ? (course.cname == course_detail.cname) : (course.cname.includes(course_detail.cname))){
-				while(Object.keys(course.pass_fail).filter((time_id) => (course.pass_fail[time_id])).length > 1){
-					let passed_time_id = Object.keys(course.pass_fail).find((time_id) => (course.pass_fail[time_id]));
+			if(course_detail.specified ? (representing_data.cname == course_detail.cname) : (representing_data.cname.includes(course_detail.cname))){
+				while(Object.keys(course.data).filter((time_id) => (course.data[time_id].pass_fail)).length > 1){
+					let passed_time_id = Object.keys(course.pass_fail).find((time_id) => (course.data[time_id].pass_fail));
 					result_courses.push(course.split(passed_time_id));
 				}
 			}
