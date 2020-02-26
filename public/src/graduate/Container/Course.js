@@ -17,8 +17,7 @@ class Course{
 
 		let year = (raw_course.cos_year || raw_course.year);
 		let semester = raw_course.semester;
-		if(!year || !semester)return;
-		let time_id = year + '-' + semester;
+		let time_id = is_dummy ? 'dummy' : year + '-' + semester;
 
 		this.data[time_id] = {
 			cname:		raw_course.cos_cname,
@@ -78,7 +77,7 @@ class Course{
 		let result = {
 			cn:			representing_data.cname,
 			en:			representing_data.ename,
-			scores:			Object.values(this.data).map((data) => (data.score)).map((score) => ({
+			scores:			is_dummy ? [] : Object.values(this.data).map((data) => (data.score)).map((score) => ({
 				score: score.score,
 				grade: score.grade,
 				year: score.year - 99 - parseInt(student_id.substr(0, 2)),
