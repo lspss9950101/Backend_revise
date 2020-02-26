@@ -65,7 +65,7 @@ class Course{
 	}
 */
 	amount(){
-		return this.data.length;
+		return Object.keys(this.data).length;
 	}
 
 	getRepresentingData(){
