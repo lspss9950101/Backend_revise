@@ -17,6 +17,7 @@ class Course{
 
 		let year = (raw_course.cos_year || raw_course.year);
 		let semester = raw_course.semester;
+		if(!year || !semester)return;
 		let time_id = year + '-' + semester;
 
 		this.data[time_id] = {
@@ -64,6 +65,10 @@ class Course{
 		return result;
 	}
 */
+	amount(){
+		return this.data.length;
+	}
+
 	getRepresentingData(){
 		return Object.values(this.data)[0];
 	}
