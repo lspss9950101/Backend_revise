@@ -78,11 +78,11 @@ function classifyLanguage(course){
 }
 
 function classifyPE(course){
-	return course.getRepresentingData().cname.includes('體育');
+	return course.brief.includes('體育');
 }
 
 function classifyArt(course){
-	return course.getRepresentingData().cname == '藝文賞析教育';
+	return course.brief.includes('藝文賞析');
 }
 
 function classifyGeneral(course){
