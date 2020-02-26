@@ -287,7 +287,12 @@ function handlePCB(req){
 function handleMentorTime(req){
 	let course_rule = req.csca.rules.compulsory.course_rules.find((rule) => (rule.cname == '導師時間'));
 	course_rule.courses.forEach((course) => {
-		if(course.department != '資工系' && !course.is_dummy)course.getRepresentingData().reason = 'notCS';
+		if(course.department != '資工系' && !course.is_dummy){
+			Object.keys(course.data).forEach((time_id) => {
+				if(course.data[time_id].reason == '')
+					course.data[time_id].reason = 'notCS';
+			});
+		}
 	});
 	while(course_rule.courses.reduce((acc, course) => (acc + course.amount()), 0) < 2)course_rule.courses.push(course_rule.createEmptyCourse());
 }
