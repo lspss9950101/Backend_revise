@@ -77,7 +77,7 @@ class Course{
 		let result = {
 			cn:			representing_data.cname,
 			en:			representing_data.ename,
-			scores:			is_dummy ? [] : Object.values(this.data).map((data) => (data.score)).map((score) => ({
+			scores:			this.is_dummy ? [] : Object.values(this.data).map((data) => (data.score)).map((score) => ({
 				score: score.score,
 				grade: score.grade,
 				year: score.year - 99 - parseInt(student_id.substr(0, 2)),
