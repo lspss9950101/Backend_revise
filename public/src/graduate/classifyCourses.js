@@ -289,6 +289,7 @@ function handleMentorTime(req){
 	course_rule.courses.forEach((course) => {
 		if(course.department != '資工系' && !course.is_dummy)course.getRepresentingData().reason = 'notCS';
 	});
+	while(course_rule.courses.length < 2)course_rule.courses.push(course_rule.createEmptyCourse());
 }
 
 function formatCompulsory(req){
