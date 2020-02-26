@@ -369,8 +369,8 @@ function splitSamelyCodedCourse(req){
 			let representing_data = course.getRepresentingData();
 			result_courses.push(course);
 			if(course_detail.specified ? (representing_data.cname == course_detail.cname) : (representing_data.cname.includes(course_detail.cname))){
-				while(Object.keys(course.data).filter((time_id) => (course.data[time_id].pass_fail)).length > 1){
-					let passed_time_id = Object.keys(course.data).find((time_id) => (course.data[time_id].pass_fail));
+				while(Object.keys(course.data).filter((time_id) => (course.data[time_id].pass_fail || course.data[time_id].reason == 'now')).length > 1){
+					let passed_time_id = Object.keys(course.data).find((time_id) => (course.data[time_id].pass_fail || course.data[time_id].reason == 'now'));
 					result_courses.push(course.split(passed_time_id));
 				}
 			}
