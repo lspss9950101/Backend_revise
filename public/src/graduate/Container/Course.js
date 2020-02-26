@@ -80,7 +80,7 @@ class Course{
 				semester: score.semester
 			})),
 			code:			this.code,
-			realCredit:		representing_data.real_credit,
+			realCredit:		this.real_credit,
 			originalCredit:		this.original_credit,
 			type:			this.type,
 			complete:		this.has_passed,
