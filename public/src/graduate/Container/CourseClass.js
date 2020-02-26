@@ -20,18 +20,17 @@ class CourseClass{
 			};
 			this.english_credit = 0;
 			this.courses.forEach((course) => {
-				let representing_data = course.getRepresentingData();
 				if(!course.has_passed)return;
-				this.credit.total += representing_data.real_credit;
+				this.credit.total += course.real_credit;
 				switch(course.dimension[0]){
 					case '核':
-						this.credit.core += representing_data.real_credit;
+						this.credit.core += course.real_credit;
 						break;
 					case '校':
-						this.credit.basic += representing_data.real_credit;
+						this.credit.basic += course.real_credit;
 						break;
 					case '跨':
-						this.credit.cross += representing_data.real_credit;
+						this.credit.cross += course.real_credit;
 						break;
 				}
 			});
@@ -45,7 +44,7 @@ class CourseClass{
 			this.courses.forEach((course) => {
 				if(!course.has_passed)return;
 				let representing_data = course.getRepresentingData();
-				this.credit += representing_data.real_credit;
+				this.credit += course.real_credit;
 				if(representing_data.english && !english_credit_blacklist.some((cname) => (representing_data.cname.includes(cname))) && CS_course_codes_prefix.some((prefix) => (course.code.startsWith(prefix)))){
 					this.english_courses.push(course);
 				} 

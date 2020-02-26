@@ -243,7 +243,7 @@ function handlePCB(req){
 		//extra_credit_course = PCB1.courses[0].copy();
 		//extra_credit_course.code += '_one';
 		extra_credit_course.code += '_one';
-		extra_credit_course.getRepresentingData().real_credit = 1;
+		extra_credit_course.real_credit = 1;
 		extra_credit_course.moved = true;
 		req.csca.classes.pro_elective.courses.push(extra_credit_course);
 
@@ -252,7 +252,7 @@ function handlePCB(req){
 		//extra_credit_course = PCB2.courses[0].copy();
 		//extra_credit_course.code += '_one';
 		extra_credit_course.code += '_one';
-		extra_credit_course.getRepresentingData().real_credit = 1;
+		extra_credit_course.real_credit = 1;
 		extra_credit_course.moved = true;
 		req.csca.classes.pro_elective.courses.push(extra_credit_course);
 	}else if(PCB1.ext.chemistry.length && PCB2.ext.chemistry.length){
@@ -341,7 +341,7 @@ function handleLanguage(req){
 			while(advanced.length < 2)advanced.push(empty_advanced);
 			for(let i = 0; i < 2; i++){
 				let representing_data = advanced[i].getRepresentingData();
-				representing_data.real_credit = 0;
+				advanced[i].real_credit = 0;
 				if(representing_data.reason == '')representing_data.reason = 'english';
 			}
 			while(advanced.length + other_language.length < 4)advanced.push(empty_advanced);

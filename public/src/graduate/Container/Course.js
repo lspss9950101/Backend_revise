@@ -6,6 +6,7 @@ class Course{
 		this.brief = raw_course.brief;
 		this.brief_new = raw_course.brief_new;
 		this.original_credit = parseFloat(raw_course.cos_credit);
+		this.real_credit = raw_course.year ? 0 : this.original_credit;
 		this.moved = false;
 		this.has_passed = (raw_course.pass_fail == '通過');
 		this.dimension = null;
@@ -22,7 +23,6 @@ class Course{
 			cname:		raw_course.cos_cname,
 			ename:		raw_course.cos_ename || '',
 			typeext:	raw_course.cos_typeext || '',
-			real_credit:	raw_course.year ? 0 : this.original_credit,
 			pass_fail:	raw_course.pass_fail == '通過',
 			score:		{
 						year:		parseInt(year),
@@ -41,6 +41,7 @@ class Course{
 
 	append(course){
 		this.data = {...this.data, ...course.data};
+		this.real_credit = this.real_credit || course.real_credit;
 		this.has_passed = this.has_passed || course.has_passed;
 	}
 
