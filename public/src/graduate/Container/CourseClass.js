@@ -45,7 +45,7 @@ class CourseClass{
 				if(!course.has_passed)return;
 				let representing_data = course.getRepresentingData();
 				this.credit += course.real_credit;
-				if(representing_data.english && !english_credit_blacklist.some((cname) => (representing_data.cname.includes(cname))) && CS_course_codes_prefix.some((prefix) => (course.code.startsWith(prefix)))){
+				if(representing_data.english && !english_credit_blacklist.some((cname) => (representing_data.cname.includes(cname))) && CS_course_codes_prefix.some((prefix) => (course.code.startsWith(prefix))) && !course.code.endsWith('_one')){
 					this.english_courses.push(course);
 				} 
 			});
