@@ -19,12 +19,12 @@ function generateSummary(req, res, next){
 
 	credit_classes.forEach((class_title) => {
 		total_credit += req.csca.classes[class_title].credit;
-		total_require += req.csca.classes[class_title].require;
+		//total_require += req.csca.classes[class_title].require;
 		english_credit += req.csca.classes[class_title].english_credit;
 		english_courses.push(...req.csca.classes[class_title].english_courses);
 	});
 
-	if(req.csca.data.user_info.submit_type != '1')total_require += 2;
+	total_require = 128;
 
 	req.csca.summary.total = {
 		acquire: total_credit,
