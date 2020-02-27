@@ -310,7 +310,7 @@ function formatCompulsory(req){
 function handleService(req){
 	req.csca.classes.service.courses.forEach((course) => {
 		Object.values(course.data).forEach((data) => {
-			data.cname = data.cname.replace(/ */, '');
+			data.cname = data.cname.replace(/\s+/g, '');
 		});
 	});
 	req.csca.classes.service.courses.filter((course) => (course.cname == '服務學習(一)')).forEach((course) => {
