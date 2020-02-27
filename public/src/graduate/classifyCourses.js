@@ -308,6 +308,11 @@ function formatCompulsory(req){
 }
 
 function handleService(req){
+	req.csca.classes.service.courses.forEach((course) => {
+		course.data.forEach((data) => {
+			data.cname = data.cname.replace(/ */, '');
+		});
+	});
 	req.csca.classes.service.courses.filter((course) => (course.cname == '服務學習(一)')).forEach((course) => {
 		if(course.department != '資工系' && !course.is_dummy)course.getRepresentingData().reason = 'notCS';
 	});
