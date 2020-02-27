@@ -366,22 +366,26 @@ function handleLanguage(req){
 
 function splitSamelyCodedCourse(req){
 	let course_list = [
-		{'class': 'compulsory', 'cname': '導師時間', 'specified': false},
-		{'class': 'PE', 'cname': '體育', 'specified': false},
-		{'class': 'art', 'cname': '藝文賞析教育', 'specified': true}
+		{'class': 'compulsory', 'cname': '導師時間', 'specified': false, 'upper_limit': 2},
+		{'class': 'PE', 'cname': '體育', 'specified': false, 'upper_limit': -1},
+		{'class': 'art', 'cname': '藝文賞析教育', 'specified': true, 'upper_limit': -1}
 	];
 
 	course_list.forEach((course_detail) => {
 		let course_class = req.csca.classes[course_detail['class']];
-		let result_courses = []; 
+		let result_courses = [];
+		let amount = course_class.courses.filter((course) => (course_detail.specified ? (course.getRepresentingData().cname == course_detail.cname) : (course.getRepresentingData().cname.includes(course_detail.cname)))).length;
 
 		course_class.courses.forEach((course) => {
 			let representing_data = course.getRepresentingData();
 			result_courses.push(course);
-			if(course_detail.specified ? (representing_data.cname == course_detail.cname) : (representing_data.cname.includes(course_detail.cname))){
-				while(Object.keys(course.data).filter((time_id) => (course.data[time_id].pass_fail || course.data[time_id].reason == 'now')).length > 1){
-					let passed_time_id = Object.keys(course.data).find((time_id) => (course.data[time_id].pass_fail || course.data[time_id].reason == 'now'));
-					result_courses.push(course.split(passed_time_id));
+			if(amount < course_detail.upper_limit || course_detail.upper_limit == -1){
+				if(course_detail.specified ? (representing_data.cname == course_detail.cname) : (representing_data.cname.includes(course_detail.cname))){
+					amount++;
+					while(Object.keys(course.data).filter((time_id) => (course.data[time_id].pass_fail || course.data[time_id].reason == 'now')).length > 1){
+						let passed_time_id = Object.keys(course.data).find((time_id) => (course.data[time_id].pass_fail || course.data[time_id].reason == 'now'));
+						result_courses.push(course.split(passed_time_id));
+					}
 				}
 			}
 		});
