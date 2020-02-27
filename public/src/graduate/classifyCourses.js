@@ -309,7 +309,7 @@ function formatCompulsory(req){
 
 function handleService(req){
 	req.csca.classes.service.courses.forEach((course) => {
-		course.data.forEach((data) => {
+		Object.values(course.data).forEach((data) => {
 			data.cname = data.cname.replace(/ */, '');
 		});
 	});
