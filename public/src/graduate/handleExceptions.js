@@ -7,7 +7,7 @@ function handleExceptions(req, res, next){
 }
 
 function DlabAndMicroControllerBefore105(req){
-	if(req.csca.student_id && req.csca.student_id.startsWith('05')){
+	if(req.csca.student_id && parseInt(req.csca.student_id.substr(0, 2)) <= 5){
 		let target_course;
 		let extra_one_credit_course;
 
