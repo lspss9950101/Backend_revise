@@ -287,6 +287,7 @@ function handlePCB(req){
 function handleMentorTime(req){
 	let course_rule = req.csca.rules.compulsory.course_rules.find((rule) => (rule.cname == '導師時間'));
 	course_rule.courses.forEach((course) => {
+		course.real_credit = 0;
 		if(course.department != '資工系' && !course.is_dummy){
 			Object.keys(course.data).forEach((time_id) => {
 				if(course.data[time_id].reason == '')
