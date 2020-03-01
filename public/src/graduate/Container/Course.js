@@ -8,7 +8,7 @@ class Course {
 		this.original_credit = parseFloat(raw_course.cos_credit);
 		this.real_credit = raw_course.year ? 0 : this.original_credit;
 		this.moved = false;
-		this.has_passed = (raw_course.pass_fail == '通過');
+		this.has_passed = !is_dummy;
 		this.dimension = null;
 		this.department = raw_course.cos_dep;
 		this.is_dummy = (is_dummy == true);
