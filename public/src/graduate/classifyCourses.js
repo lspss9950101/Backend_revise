@@ -198,7 +198,7 @@ function handleCompulsory(req) {
 
 // Rules not confirmed.
 function handleOffset(req) {
-	const english_offset = req.csca.data.offset_courses.find((course) => (course.cos_cname == '外語榮譽學分'));
+	/*const english_offset = req.csca.data.offset_courses.find((course) => (course.cos_cname == '外語榮譽學分'));
 	if (english_offset) {
 		const parsed_raw_course = {
 			cos_code:	english_offset.cos_code,
@@ -215,7 +215,7 @@ function handleOffset(req) {
 		const course = new Course(parsed_raw_course);
 		course.getRepresentingData().reason = 'free2';
 		req.csca.classes.language.courses.push(course);
-	}
+	}*/
 }
 
 function handlePCB(req) {
