@@ -198,7 +198,8 @@ function handleCompulsory(req) {
 
 // Rules not confirmed.
 function handleOffset(req) {
-	/*const english_offset = req.csca.data.offset_courses.find((course) => (course.cos_cname == '外語榮譽學分'));
+	/*
+	const english_offset = req.csca.data.offset_courses.find((course) => (course.cos_cname == '外語榮譽學分'));
 	if (english_offset) {
 		const parsed_raw_course = {
 			cos_code:	english_offset.cos_code,
@@ -298,11 +299,12 @@ function formatCompulsory(req) {
 }
 
 function handleService(req) {
+	/*
 	req.csca.classes.service.courses.forEach((course) => {
 		Object.values(course.data).forEach((data) => {
 			data.cname = data.cname.replace(/\s+/g, '');
 		});
-	});
+	});*/
 	req.csca.classes.service.courses.filter((course) => (course.cname == '服務學習(一)')).forEach((course) => {
 		if (course.department != '資工系' && !course.is_dummy)course.getRepresentingData().reason = 'notCS';
 	});
@@ -366,13 +368,12 @@ function splitSamelyCodedCourse(req) {
 		course_class.courses.forEach((course) => {
 			const representing_data = course.getRepresentingData();
 			result_courses.push(course);
-			if (amount < course_detail.upper_limit || course_detail.upper_limit == -1) {
-				if (course_detail.specified ? (representing_data.cname == course_detail.cname) : (representing_data.cname.includes(course_detail.cname))) {
+			if (course_detail.specified ? (representing_data.cname == course_detail.cname) : (representing_data.cname.includes(course_detail.cname))) {
+				while (Object.keys(course.data).filter((time_id) => (course.data[time_id].pass_fail || course.data[time_id].reason == 'now')).length > 1) {
+					if (amount >= course_detail.upper_limit && course_detail.upper_limit != -1) return;
+					const passed_time_id = Object.keys(course.data).find((time_id) => (course.data[time_id].pass_fail || course.data[time_id].reason == 'now'));
+					result_courses.push(course.split(passed_time_id));
 					amount++;
-					while (Object.keys(course.data).filter((time_id) => (course.data[time_id].pass_fail || course.data[time_id].reason == 'now')).length > 1) {
-						const passed_time_id = Object.keys(course.data).find((time_id) => (course.data[time_id].pass_fail || course.data[time_id].reason == 'now'));
-						result_courses.push(course.split(passed_time_id));
-					}
 				}
 			}
 		});
