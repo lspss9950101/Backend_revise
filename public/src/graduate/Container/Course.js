@@ -23,7 +23,7 @@ class Course {
 			cname:	raw_course.cos_cname,
 			ename:	raw_course.cos_ename || '',
 			typeext:	raw_course.cos_typeext || '',
-			pass_fail:	raw_course.pass_fail == '通過',
+			pass_fail:	is_dummy != true,
 			score:	{
 						year:	parseInt(year),
 						score:	parseInt(raw_course.score) || -1,
