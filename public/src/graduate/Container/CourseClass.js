@@ -1,6 +1,8 @@
 var english_credit_blacklist = require('./../static/additional_condition.js').english_credit_blacklist;
 var CS_course_codes_prefix = require('./../static/additional_condition.js').CS_course_codes_prefix;
 
+var Course = require('./Course.js');
+
 class CourseClass {
 	constructor(title) {
 		this.title = title;
@@ -46,7 +48,7 @@ class CourseClass {
 				const representing_data = course.getRepresentingData();
 				this.credit += course.real_credit;
 				if (representing_data.english && !english_credit_blacklist.some((cname) => (representing_data.cname.includes(cname))) && CS_course_codes_prefix.some((prefix) => (course.code.startsWith(prefix))) && !course.code.endsWith('_one')) {
-					let new_course = Object.assign({}, course);
+					const new_course = Object.assign(new Course(), course);
 					new_course.real_credit = new_course.original_credit;
 					this.english_courses.push(new_course);
 				}

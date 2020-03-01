@@ -15,6 +15,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint *.js public/",
+    "lint_fix": "eslint *.js public --fix",
     "start": "node server.js"
   },
   "repository": {
