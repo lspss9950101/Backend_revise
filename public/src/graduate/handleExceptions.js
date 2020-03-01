@@ -11,7 +11,7 @@ function DlabAndMicroControllerBefore105(req) {
 		let target_course;
 		let extra_one_credit_course;
 
-		target_course = req.csca.classes.compulsory.courses.find((course) => (course.getRepresentingData().cname.startsWith('數位電路實驗')));
+		target_course = req.csca.classes.compulsory.courses.find((course) => (course.getRepresentingData().cname.startsWith('數位電路實驗') && course.original_credit == 3));
 		if (target_course != null) {
 			extra_one_credit_course = Object.assign(new Course(), target_course);
 			extra_one_credit_course.code += '_one';
@@ -21,7 +21,7 @@ function DlabAndMicroControllerBefore105(req) {
 			target_course.real_credit = 2;
 		}
 
-		target_course = req.csca.classes.compulsory.courses.find((course) => (course.getRepresentingData().cname.startsWith('微處理機系統實驗')));
+		target_course = req.csca.classes.compulsory.courses.find((course) => (course.getRepresentingData().cname.startsWith('微處理機系統實驗') && course.original_credit == 3));
 		if (target_course != null) {
 			extra_one_credit_course = Object.assign(new Course(), target_course);
 			extra_one_credit_course.code += '_one';
