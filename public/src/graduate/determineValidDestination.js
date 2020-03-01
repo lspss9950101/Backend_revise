@@ -70,7 +70,7 @@ function validateElective(req, course) {
 	let destination = null;
 
 	if (req.csca.rules.compulsory.codes.some((code) => (code + '_one' == course.code)))destination = ['其他選修'];
-	else if (course.type == '必修')destination = [];
+	else if (req.csca.rules.compulsory.codes.some((code) => (code == course.code)))destination = [];
 	else destination = ['其他選修'];
 
 	if (course.type == '軍訓' || course.code.startsWith('PYY') || course.cname == '藝文賞析教育' || course.code.startsWith('GEC') || course.code.startsWith('CGE') || course.code.startsWith('MIN') || course.cname.includes('服務學習')) destination = [];
@@ -91,7 +91,7 @@ function validateGeneral(req, course) {
 	if (course.type != '通識') return [];
 
 	const course_data = Object.values(req.csca.courses).find((single_course_data) => (course.code == single_course_data.code));
-	if (course_data.type == '必修' && CS_codes_prefix.some((prefix) => (course.code.startsWith(prefix)))) destination = [];
+	if (req.csca.rules.compulsory.codes.some((code) => (course.code == code)) && CS_codes_prefix.some((prefix) => (course.code.startsWith(prefix)))) destination = [];
 	else if (course_data.brief) destination = ['通識(舊制)-' + course_data.brief.split('/'[0])];
 	else if (course.code.startsWith('MIN') && course.type == '選修') destination = ['通識(舊制)-自然'];
 	else destination = [];
@@ -129,7 +129,7 @@ function validateGraduate(req, course) {
 
 function validateAddition(req, course) {
 	let destination = null;
-	if (course.type == '必修' && CS_codes_prefix.some((prefix) => (course.code.startsWith(prefix)))) destination = [];
+	if (req.csca.rules.compulsory.codes.some((code) => (code == course.code)) && CS_codes_prefix.some((prefix) => (course.code.startsWith(prefix)))) destination = [];
 	else if (['物理', '化學', '生物'].some((target_name) => (course.cname.includes(target_name)))) destination = [];
 	else destination = ['雙主修、輔系、學分學程'];
 	return destination;
