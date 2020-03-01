@@ -1,10 +1,10 @@
 var query = require('./../../../../../db/msql');
 
 function updateStudentList(req, res, next) {
-	let new_result = req.csca.summary;
+	const new_result = req.csca.summary;
 	var courseResult = [
 		{title: '共同必修', 			credit: new_result.compulsory.acquire, 	require: new_result.compulsory.require, 	course: new_result.compulsory.course},
-		{title: '專業選修', 			credit: new_result.professional.acquire,require: new_result.professional.require, 	course: new_result.professional.require},
+		{title: '專業選修', 			credit: new_result.professional.acquire, require: new_result.professional.require, 	course: new_result.professional.require},
 		{title: '其他選修', 			credit: new_result.other.acquire, 	require: new_result.other.acquire, 		course: new_result.other.course},
 		{title: '外語', 			credit: new_result.language.acquire, 	require: new_result.language.require, 		course: new_result.language.course},
 		{title: '通識(舊制)', 			credit: new_result.general.acquire, 	require: new_result.general.require, 		course: new_result.general.course},
@@ -16,30 +16,30 @@ function updateStudentList(req, res, next) {
 		{title: '抵免研究所課程', 		credit: new_result.graduate.acquire, 	require: new_result.graduate.require, 		course: new_result.graduate.course},
 		{title: '雙主修、輔系、學分學程', 	credit: new_result.dmajor_minor_program.acquire, require: new_result.dmajor_minor_program.require, course: new_result.dmajor_minor_program.course},
 		{
-			total:			new_result.total.acquire,
-			total_require:		new_result.total.require,
-			compulsory:		new_result.compulsory.acquire,
+			total:	new_result.total.acquire,
+			total_require:	new_result.total.require,
+			compulsory:	new_result.compulsory.acquire,
 			compulsory_require:	new_result.compulsory.require,
-			pro:			new_result.professional.acquire,
-			pro_require:		new_result.professional.require,
-			english:		new_result.english.acquire,
+			pro:	new_result.professional.acquire,
+			pro_require:	new_result.professional.require,
+			english:	new_result.english.acquire,
 			english_require:	new_result.english.require,
-			other:			new_result.other.acquire,
-			other_require:		new_result.other.require,
-			general:		new_result.general.acquire,
+			other:	new_result.other.acquire,
+			other_require:	new_result.other.require,
+			general:	new_result.general.acquire,
 			general_require:	new_result.general.require,
-			general_new:		new_result.general_new.acquire,
+			general_new:	new_result.general_new.acquire,
 			general_new_require:	new_result.general_new.require,
-			pe:			new_result.pe.acquire,
-			pe_require:		new_result.pe.require,
-			language:		new_result.language.acquire,
+			pe:	new_result.pe.acquire,
+			pe_require:	new_result.pe.require,
+			language:	new_result.language.acquire,
 			language_require:	new_result.language.require,
-			service:		new_result.service.acquire,
+			service:	new_result.service.acquire,
 			service_require:	new_result.service.require,
-			art:			new_result.art.acquire,
-			art_require:		new_result.art.require,
-			exclusion:		new_result.exclusion.acquire,
-			graduate:		new_result.graduate.acquire,
+			art:	new_result.art.acquire,
+			art_require:	new_result.art.require,
+			exclusion:	new_result.exclusion.acquire,
+			graduate:	new_result.graduate.acquire,
 			dmajor_minor_program:	new_result.dmajor_minor_program.acquire
 		}
 	];
@@ -124,7 +124,7 @@ function updateStudentList(req, res, next) {
 	list.submit_status = parseInt(info.graduate_submit);
 
 
-	//general_old
+	// general_old
 
 	if (info.submit_type === null) {
 		info.submit_type = '0';
@@ -181,7 +181,7 @@ function updateStudentList(req, res, next) {
 	var old_pass = (list.old_culture <= 0 && list.old_citizen <= 0 && list.old_group <= 0 && list.old_science <= 0 && list.old_history <= 0 && list.old_contemp <= 0 && list.old_total <= 0);
 	var will_old_pass = (list.old_culture - will_list.old_culture <= 0 && list.old_citizen - will_list.old_citizen <= 0 && list.old_group - will_list.old_group <= 0 && list.old_science - will_list.old_science <= 0 && list.old_history - will_list.old_history <= 0 && list.old_contemp - will_list.old_contemp <= 0 && list.old_total - will_list.old_total <= 0);
 
-	//general_new
+	// general_new
 	list.new_total = credit.general_new_require - credit.general_new;
 	list.new_core_total = general_new.require.core;
 	for (var i = 0; i < general_new.course.length; i++) {
@@ -235,7 +235,7 @@ function updateStudentList(req, res, next) {
 		will_general_pass = will_new_pass;
 	}
 
-	//lang
+	// lang
 	if (info.en_certificate === null) {
 		info.en_certificate = '0';
 	}
@@ -278,13 +278,11 @@ function updateStudentList(req, res, next) {
 	} else if (list.en_status === 2 || list.en_status === 3 || list.en_status === 4) {
 		list.en_basic = 4 - basic_credit;
 		list.en_advanced = 4 - advanced_credit - second_credit;
-		if (list.en_advanced < 0)
-			list.en_basic += list.en_advanced;
+		if (list.en_advanced < 0) list.en_basic += list.en_advanced;
 		list.en_total = 8 - basic_credit - advanced_credit - second_credit;
 		will_list.en_basic = list.en_basic - will_basic;
 		will_list.en_advanced = list.en_advanced - will_advanced;
-		if (will_list.en_advanced < 0)
-			will_list.en_basic += will_list.en_advanced;
+		if (will_list.en_advanced < 0) will_list.en_basic += will_list.en_advanced;
 		will_list.en_total = list.en_total - will_basic - will_advanced - will_second;
 	} else if (list.en_status === 1) {
 		list.en_basic = 0;
@@ -503,10 +501,8 @@ function updateStudentList(req, res, next) {
 		} else {
 			result2 = JSON.parse(result2);
 			req.studentListUpdate = result2;
-			if (req.studentListUpdate)
-				next();
-			else
-				res.redirect('/');
+			if (req.studentListUpdate) next();
+			else res.redirect('/');
 		}
 	});
 
