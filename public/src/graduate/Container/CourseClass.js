@@ -46,7 +46,9 @@ class CourseClass {
 				const representing_data = course.getRepresentingData();
 				this.credit += course.real_credit;
 				if (representing_data.english && !english_credit_blacklist.some((cname) => (representing_data.cname.includes(cname))) && CS_course_codes_prefix.some((prefix) => (course.code.startsWith(prefix))) && !course.code.endsWith('_one')) {
-					this.english_courses.push(course);
+					let new_course = Object.assign({}, course);
+					new_course.real_credit = new_course.original_credit;
+					this.english_courses.push(new_course);
 				}
 			});
 			this.english_credit = this.english_courses.length;
