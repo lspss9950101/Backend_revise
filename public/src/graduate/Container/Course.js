@@ -1,5 +1,5 @@
 class Course {
-	constructor(raw_course, student_id, is_dummy) {
+	constructor(raw_course, is_dummy) {
 		if (!raw_course) return;
 		this.code = raw_course.cos_code;
 		this.type = raw_course.cos_type;
@@ -23,7 +23,7 @@ class Course {
 			cname:	raw_course.cos_cname,
 			ename:	raw_course.cos_ename || '',
 			typeext:	raw_course.cos_typeext || '',
-			pass_fail:	is_dummy != true,
+			pass_fail:	!is_dummy,
 			score:	{
 						year:	parseInt(year),
 						score:	parseInt(raw_course.score) || -1,

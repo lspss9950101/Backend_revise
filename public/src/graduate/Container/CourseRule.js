@@ -25,7 +25,7 @@ class CourseRule {
 			cos_dep:	''
 		};
 
-		return new Course(dummy_raw_course, student_id, true);
+		return new Course(dummy_raw_course, true);
 	}
 }
 
