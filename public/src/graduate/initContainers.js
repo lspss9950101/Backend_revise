@@ -1,6 +1,6 @@
 var CourseClass = require('./Container/CourseClass.js');
 
-function initContainers(req, res, next){
+function initContainers(req, res, next) {
 	req.csca.courses = {};
 
 	req.csca.classes = {
@@ -10,20 +10,20 @@ function initContainers(req, res, next){
 		language:	new CourseClass('language'),
 		general_old:	new CourseClass('general'),
 		general_new:	new CourseClass('general_new'),
-		PE:		new CourseClass('pe'),
+		PE:	new CourseClass('pe'),
 		service:	new CourseClass('service'),
-		art:		new CourseClass('art'),
+		art:	new CourseClass('art'),
 		uncount:	new CourseClass('exclusion'),
 		graduate:	new CourseClass('graduate'),
 		addition:	new CourseClass('dmajor_minor_program')
 	};
 
-	if(req.csca.data.required_credit)completeClassDetails(req);
+	if (req.csca.data.required_credit)completeClassDetails(req);
 
 	next();
 }
 
-function completeClassDetails(req){
+function completeClassDetails(req) {
 	req.csca.classes.compulsory.require = parseFloat(req.csca.data.required_credit.compulsory);
 	req.csca.classes.pro_elective.require = parseFloat(req.csca.data.required_credit.pro_elective);
 	req.csca.classes.elective.require = parseFloat(req.csca.data.required_credit.elective);
