@@ -333,7 +333,6 @@ function handleLanguage(req) {
 				else if (representing_data.cname.includes('英文'))advanced.push(course);
 				else other_language.push(course);
 			});
-
 			if (!freshman_one) freshman_one = req.csca.rules.language.freshman_one.createEmptyCourse();
 			if (!freshman_two) freshman_two = req.csca.rules.language.freshman_two.createEmptyCourse();
 
