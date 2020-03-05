@@ -1,7 +1,7 @@
 var query = require('./../../../../../db/msql');
 
 function updateStudentList(req, res, next) {
-	let new_result = req.csca.summary;
+	const new_result = req.csca.summary;
 	var courseResult = [
 		{title: '共同必修', 			acquire: new_result.compulsory.acquire, 	require: new_result.compulsory.require, 	course: new_result.compulsory.course},
 		{title: '專業選修', 			acquire: new_result.professional.acquire,require: new_result.professional.require, 	course: new_result.professional.course},
@@ -466,10 +466,8 @@ function updateStudentList(req, res, next) {
 		} else {
 			result2 = JSON.parse(result2);
 			req.studentListUpdate = result2;
-			if (req.studentListUpdate)
-				next();
-			else
-				res.redirect('/');
+			if (req.studentListUpdate) next();
+			else res.redirect('/');
 		}
 	});
 
