@@ -56,13 +56,13 @@ async function parseDataInParallel(req) {
 function parseTakenCourses(req) {
 	if (!req.csca.raw_data.user_all_score) return;
 	if (!req.csca.data)req.csca.data = {};
-	req.csca.data.taken_courses = req.csca.raw_data.user_all_score.map((course) => (new Course(course)));
+	req.csca.data.taken_courses = req.csca.raw_data.user_all_score.map((course) => (new Course(course, 'passed')));
 }
 
 function parseOnCourse(req) {
 	if (!req.csca.raw_data.user_on_cos) return;
 	if (!req.csca.data)req.csca.data = {};
-	req.csca.data.on_courses = req.csca.raw_data.user_on_cos.map((course) => (new Course(course)));
+	req.csca.data.on_courses = req.csca.raw_data.user_on_cos.map((course) => (new Course(course, 'now')));
 }
 
 function parseOffsetCourse(req) {

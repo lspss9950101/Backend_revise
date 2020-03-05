@@ -1,5 +1,5 @@
 class Course {
-	constructor(raw_course, is_dummy) {
+	constructor(raw_course, data_type) {
 		if (!raw_course) return;
 		this.code = raw_course.cos_code;
 		this.type = raw_course.cos_type;
@@ -8,16 +8,16 @@ class Course {
 		this.original_credit = parseFloat(raw_course.cos_credit);
 		this.real_credit = raw_course.year ? 0 : this.original_credit;
 		this.moved = false;
-		this.has_passed = !is_dummy;
+		this.has_passed = (data_type == 'passed');
 		this.dimension = null;
 		this.department = raw_course.cos_dep;
-		this.is_dummy = (is_dummy == true);
+		this.is_dummy = (data_type == 'dummy');
 
 		this.data = {};
 
 		const year = (raw_course.cos_year || raw_course.year);
 		const semester = raw_course.semester;
-		const time_id = is_dummy ? 'dummy' : year + '-' + semester;
+		const time_id = (data_type == 'dummy') ? 'dummy' : year + '-' + semester;
 
 		this.data[time_id] = {
 			cname:	raw_course.cos_cname,
