@@ -15,12 +15,12 @@ var generateSummary = require('./../graduate/generateSummary.js');
 var getGraduateCheck = require('./../graduate/getGraduateCheck.js');
 var updateGraduateStudentList = require('./../graduate/updateGraduateStudentList.js');
 
-function echo(req, res, next){
+function echo(req, res, next) {
 	console.log(require('util').inspect(req.csca, false, null, true));
 	next();
 }
 
-router.post('/assistants/graduate/detail', 
+router.post('/assistants/graduate/detail',
 	csrfProtection,
 	syncProfessionalField,
 	getStudentId,
@@ -38,11 +38,11 @@ router.post('/assistants/graduate/detail',
 	},
 	fetchAndParseData,
 	initContainers,
-	mergeDuplicates, 
-	classifyCourses, 
-	handleExceptions, 
+	mergeDuplicates,
+	classifyCourses,
+	handleExceptions,
 	followRemainingRules,
-	generateSummary, 
+	generateSummary,
 	(req, res, next) => {
 		res.json(req.csca.summary);
 	}
@@ -80,11 +80,11 @@ router.get('/assistants/graduate/studentListUpdate',
 	},
 	fetchAndParseData,
 	initContainers,
-	mergeDuplicates, 
-	classifyCourses, 
-	handleExceptions, 
+	mergeDuplicates,
+	classifyCourses,
+	handleExceptions,
 	followRemainingRules,
-	generateSummary, 
+	generateSummary,
 	updateGraduateStudentList,
 	(req, res) => {
 		res.json(req.csca.student_list);
