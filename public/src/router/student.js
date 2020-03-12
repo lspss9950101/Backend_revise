@@ -56,7 +56,8 @@ router.post('/students/graduate/legalMoveTarget',
 			{func_name: 'ShowUserAllScore', 	container_name: 'user_all_score',	syntax: req.csca.student_id},
 			{func_name: 'ShowUserOnCos',		container_name:	'user_on_cos',		syntax: req.csca.student_id},
 			{func_name: 'ShowCosGroup',		container_name: 'cos_group',		syntax: req.csca.student_id},
-			{func_name: 'ShowGraduateRule',		container_name: 'graduate_rule',	syntax: req.csca.student_id}
+			{func_name: 'ShowGraduateRule',		container_name: 'graduate_rule',	syntax: req.csca.student_id},
+			{func_name: 'ShowUserInfo',		container_name: 'user_info',		syntax: req.csca.student_id}
 		];
 		next();
 	},
